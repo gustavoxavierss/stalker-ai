@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stalkea AI - Monitoramento Oficial</title>
+    
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1408422817609246');
+        fbq('track', 'PageView');
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
@@ -12,7 +23,7 @@
         .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
         .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
         @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
-        .glass { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .animate-text-shine {
             background: linear-gradient(90deg, #a855f7, #d8b4fe, #ffffff, #a855f7);
             background-size: 200% auto;
@@ -28,48 +39,45 @@
     <div class="min-h-screen relative flex flex-col items-center justify-center px-4">
         <div class="matrix-bg matrix-bg-1"></div>
 
-        <div class="w-full max-w-[500px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl">
-            <div class="mb-4 relative">
-                <img id="userPhoto" alt="Stalkea.ai" class="w-48 h-48 rounded-full border-4 border-purple-500/20 shadow-[0_0_30px_rgba(168,85,247,0.4)] object-cover transition-all duration-500" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
+        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl">
+            
+            <div id="initialLogo" class="mb-4">
+                <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
             </div>
 
-            <h1 id="mainTitle" class="text-[28px] md:text-[34px] font-black text-center leading-tight mb-6">
-                Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
-            </h1>
+            <div id="contentArea" class="w-full flex flex-col items-center">
+                <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
+                    Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
+                </h1>
 
-            <input type="text" id="usernameInput" placeholder="Usuário sem o @" 
-                class="w-full mb-4 p-4 rounded-full bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
+                <p class="text-gray-400 text-center text-sm mb-6">Digite o nome de usuário sem o "@"</p>
 
-            <button id="searchBtn" class="w-full h-[68px] relative rounded-full font-black text-[22px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg overflow-hidden group">
-                <span id="btnText">ESPIONAR AGORA</span>
-                <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </button>
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
+                    class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
 
-            <div class="flex gap-4 mt-6 opacity-80 text-[13px] font-bold">
-                <span>🔒 100% Anônimo</span>
-                <span>🔑 Sem Senha</span>
+                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg">
+                    ESPIONAR AGORA
+                </button>
             </div>
         </div>
 
-        <div class="mt-6 text-center z-10">
-            <p class="text-purple-400 font-black text-sm">+76.562 perfis analisados hoje</p>
+        <div class="mt-8 text-center opacity-60">
+            <p class="text-[#a855f7] font-black text-sm">+81.595 perfis analisados hoje</p>
         </div>
     </div>
 
     <script>
-        const btn = document.getElementById('searchBtn');
+        const searchBtn = document.getElementById('searchBtn');
         const input = document.getElementById('usernameInput');
-        const photo = document.getElementById('userPhoto');
-        const title = document.getElementById('mainTitle');
-        const btnText = document.getElementById('btnText');
+        const container = document.getElementById('contentArea');
+        const initialLogo = document.getElementById('initialLogo');
 
-        btn.addEventListener('click', async () => {
+        searchBtn.addEventListener('click', async () => {
             const user = input.value.trim().replace('@', '');
-            if (!user) return alert("Por favor, digite o usuário.");
+            if (!user) return alert("Digite um usuário válido.");
 
-            // Estado de Carregamento
-            btnText.innerText = "RASTREANDO...";
-            btn.disabled = true;
+            searchBtn.innerText = "LOCALIZANDO...";
+            searchBtn.disabled = true;
 
             const url = `https://instagram-looter2.p.rapidapi.com/search?query=${user}`;
             const options = {
@@ -84,32 +92,59 @@
                 const response = await fetch(url, options);
                 const data = await response.json();
 
-                // Puxando o primeiro usuário da lista de resultados da sua API
                 if (data.users && data.users.length > 0) {
                     const perfil = data.users[0].user;
+                    initialLogo.style.display = 'none';
 
-                    // 1. Atualiza a Foto Real com Proxy anti-bloqueio
-                    const realPhotoUrl = perfil.profile_pic_url;
-                    photo.src = `https://images.weserv.nl/?url=${encodeURIComponent(realPhotoUrl)}`;
-                    
-                    // 2. Atualiza a Interface
-                    title.innerHTML = `Perfil de <span class="text-purple-400">@${perfil.username}</span> localizado!`;
-                    btnText.innerText = "VER RELATÓRIO COMPLETO";
-                    btn.style.background = "linear-gradient(to right, #00E05A, #00b347)";
-                    
-                    // Dispara o Pixel de conversão se você tiver um evento configurado
-                    if(typeof fbq === 'function') fbq('track', 'Lead');
+                    // Monta a tela de confirmação exatamente como na imagem solicitada
+                    container.innerHTML = `
+                        <div class="w-full animate-fade-in">
+                            <h2 class="text-2xl font-bold text-center mb-2 text-purple-400">Confirme o Instagram</h2>
+                            <p class="text-center text-gray-300 text-sm mb-8">Você deseja espionar o perfil <span class="font-bold text-white">@${perfil.username}</span>?</p>
+                            
+                            <div class="flex items-center justify-between w-full mb-8 px-2">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(perfil.profile_pic_url)}" 
+                                     class="w-20 h-20 rounded-full border-2 border-purple-500 object-cover shadow-lg">
+                                <div class="flex flex-1 justify-around text-center ml-4">
+                                    <div><p class="font-black text-lg leading-none">${perfil.media_count || '1'}</p><p class="text-[10px] text-gray-500 uppercase">posts</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.follower_count || '2.522'}</p><p class="text-[10px] text-gray-500 uppercase">seguidores</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.following_count || '2.385'}</p><p class="text-[10px] text-gray-500 uppercase">seguindo</p></div>
+                                </div>
+                            </div>
+
+                            <div class="w-full text-xs text-gray-300 bg-white/5 p-4 rounded-2xl mb-8 leading-relaxed border border-white/5">
+                                ${perfil.biography || "Transformo ideias em produtos lucrativos 💡<br>Persistência e Constância definem o seu sucesso."}
+                            </div>
+
+                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3">
+                                <span class="text-red-500 text-lg">⚠️</span>
+                                <p class="text-[11px] text-red-400 leading-tight"><b>Aviso:</b> Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</p>
+                            </div>
+
+                            <div class="flex w-full gap-3">
+                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5">Corrigir @</button>
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
+                                    Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('finalConfirm').addEventListener('click', () => {
+                        // Coloque aqui o link do seu checkout
+                        window.location.href = "https://SEU_CHECKOUT_AQUI.com";
+                    });
 
                 } else {
-                    alert("Perfil não encontrado ou é privado.");
-                    btnText.innerText = "ESPIONAR AGORA";
+                    alert("Perfil não encontrado. Tente novamente.");
+                    searchBtn.innerText = "ESPIONAR AGORA";
+                    searchBtn.disabled = false;
                 }
             } catch (error) {
                 console.error(error);
-                alert("Erro ao conectar com o Instagram. Verifique sua chave API.");
-                btnText.innerText = "ESPIONAR AGORA";
-            } finally {
-                btn.disabled = false;
+                alert("Erro ao conectar com a API.");
+                searchBtn.innerText = "ESPIONAR AGORA";
+                searchBtn.disabled = false;
             }
         });
     </script>
