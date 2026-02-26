@@ -33,11 +33,9 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; font-size: 14px; }
+        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; }
         .blur-extreme { filter: blur(25px); opacity: 0.4; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
-        .iphone-frame { width: 100%; max-width: 430px; margin: 0 auto; position: relative; }
-        img { max-width: 100%; height: auto; }
     </style>
 </head>
 <body>
@@ -55,7 +53,7 @@
                 </h1>
                 <p class="text-gray-400 text-center text-sm mb-6 uppercase font-bold tracking-widest italic">Digite o usuário sem o "@"</p>
                 <input type="text" id="usernameInput" placeholder="ex: neymarjr" class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
-                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg">
+                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg uppercase italic">
                     ESPIONAR AGORA
                 </button>
             </div>
@@ -81,7 +79,7 @@
             return num.toLocaleString('pt-BR');
         };
 
-        // PESQUISA INICIAL (ETAPA 1)
+        // PESQUISA E ETAPA 2: CONFIRMAÇÃO
         searchBtn.addEventListener('click', async () => {
             const user = input.value.trim().replace('@', '');
             if (!user) return alert("Digite um usuário válido.");
@@ -96,7 +94,6 @@
                 
                 if (userData && userData.username) {
                     initialLogo.style.display = 'none';
-                    // ETAPA 2: CONFIRMAÇÃO (FIDELIDADE 100%)
                     container.innerHTML = `
                         <div class="w-full animate-fade-in text-center">
                             <h2 class="text-2xl font-bold mb-2 text-purple-400">Confirme o Instagram</h2>
@@ -109,7 +106,7 @@
                                     <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.following_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
                                 </div>
                             </div>
-                            <div class="w-full bg-white/5 p-5 rounded-3xl mb-8 border border-white/5 bio-style">
+                            <div class="w-full text-sm text-gray-200 bg-white/5 p-5 rounded-3xl mb-8 border border-white/5 bio-style">
                                 ${userData.biography || "Perfil identificado com sucesso."}
                             </div>
                             <div class="flex w-full gap-3">
@@ -123,7 +120,7 @@
             } catch (e) { alert("Erro ao carregar perfil."); searchBtn.disabled = false; }
         });
 
-        // SIMULAÇÃO (ETAPA 3)
+        // ETAPA 3: SIMULAÇÃO
         function startSimulation() {
             container.innerHTML = `
                 <div class="w-full text-center py-10 animate-fade-in">
@@ -140,7 +137,7 @@
             }, 400);
         }
 
-        // PÁGINA FINAL (ETAPA 4: RESULTADOS E VENDAS)
+        // ETAPA 4: PÁGINA FINAL (PAYWALL)
         function showFinalResults() {
             wrapper.className = "bg-[#0a0a0a] min-h-screen py-10 flex flex-col items-center";
             wrapper.innerHTML = `
@@ -170,8 +167,8 @@
                     </div>
 
                     <div class="mb-12 text-center flex flex-col items-center">
-                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60 italic">📷 Mídias e fotos privadas (Explícito)</h4>
-                        <div class="relative w-full aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
+                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📷 Mídias e fotos privadas (Explícito)</h4>
+                        <div class="relative w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
                             <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
                             <div class="absolute inset-0 flex items-center justify-center text-white/40 text-4xl">🔒</div>
                         </div>
@@ -184,7 +181,7 @@
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="relative">
                                     <div class="absolute -inset-4 bg-purple-500 rounded-full animate-ping opacity-30"></div>
-                                    <img src="https://i.ibb.co/CpmGVsBz/86fbada39188c9581d54de368159d4d0.png" class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl object-cover">
+                                    <img src="https://i.ibb.co/gMvJHcyP/86fbada39188c9581d54de368159d4d0.png" class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl object-cover">
                                 </div>
                             </div>
                         </div>
@@ -203,7 +200,7 @@
                         <div class="bg-zinc-900/50 rounded-[40px] p-6 border border-white/5 relative overflow-hidden">
                             <div class="flex items-start gap-3 mb-4 opacity-40 blur-[5px]">
                                 <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-8 h-8 rounded-full border border-purple-500">
-                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight text-gray-300">"Amanhã estarei livre... quer me ver?"</div>
+                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight text-gray-300">"Amanhã estarei sozinha em casa... quer vir me ver?"</div>
                             </div>
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[10px] shadow-2xl uppercase italic tracking-widest">🔒 Revelar Direct</div>
@@ -221,6 +218,7 @@
                             class="w-full h-20 rounded-3xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-widest shadow-2xl shadow-purple-500/40 hover:scale-[1.03] transition-transform">
                             Liberar Acesso Agora
                         </button>
+                        <p class="mt-6 text-[9px] text-gray-600 font-black uppercase tracking-widest italic opacity-70 italic">Acesso enviado imediatamente via e-mail</p>
                     </div>
                 </div>
             `;
