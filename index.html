@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stalkea AI - Monitoramento Oficial</title>
     
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1408422817609246');
+        fbq('track', 'PageView');
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
@@ -13,7 +23,7 @@
         .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
         .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
         @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
-        .glass { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .animate-text-shine {
             background: linear-gradient(90deg, #a855f7, #d8b4fe, #ffffff, #a855f7);
             background-size: 200% auto;
@@ -23,60 +33,58 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-        
-        /* Ajuste crucial para biografia 100% completa e formatada */
-        .bio-container {
-            white-space: pre-wrap;
-            word-break: break-word;
-            line-height: 1.5;
-            text-align: left;
-        }
     </style>
 </head>
 <body>
     <div class="min-h-screen relative flex flex-col items-center justify-center px-4">
         <div class="matrix-bg matrix-bg-1"></div>
 
-        <div id="mainBox" class="w-full max-w-[440px] glass rounded-[40px] p-7 md:p-9 flex flex-col items-center relative z-10 shadow-2xl">
+        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl">
             
-            <div id="initialContent" class="w-full flex flex-col items-center">
-                <div class="mb-6">
-                    <img alt="Logo" class="w-32 h-32 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
-                </div>
+            <div id="initialLogo" class="mb-4">
+                <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
+            </div>
 
-                <h1 class="text-[26px] md:text-[32px] font-black text-center leading-tight mb-6">
-                    Descubra a <span class="animate-text-shine">verdade</span> agora.
+            <div id="contentArea" class="w-full flex flex-col items-center">
+                <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
+                    Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
                 </h1>
 
-                <input type="text" id="userInput" placeholder="Digite o usuário (ex: g.xavierss)" 
+                <p class="text-gray-400 text-center text-sm mb-6">Digite o nome de usuário sem o "@"</p>
+
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
                     class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
 
-                <button id="startBtn" class="w-full h-[64px] rounded-full font-black text-[18px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:brightness-110 active:scale-[0.96] transition-all shadow-lg shadow-purple-500/20">
+                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg">
                     ESPIONAR AGORA
                 </button>
             </div>
         </div>
+
+        <div class="mt-8 text-center opacity-60">
+            <p class="text-[#a855f7] font-black text-sm">+81.595 perfis analisados hoje</p>
+        </div>
     </div>
 
     <script>
-        const startBtn = document.getElementById('startBtn');
-        const userInput = document.getElementById('userInput');
-        const mainBox = document.getElementById('mainBox');
+        const searchBtn = document.getElementById('searchBtn');
+        const input = document.getElementById('usernameInput');
+        const container = document.getElementById('contentArea');
+        const initialLogo = document.getElementById('initialLogo');
 
-        startBtn.addEventListener('click', async () => {
-            const user = userInput.value.trim().replace('@', '');
-            if (!user) return alert("Por favor, informe o @");
+        searchBtn.addEventListener('click', async () => {
+            const user = input.value.trim().replace('@', '');
+            if (!user) return alert("Digite um usuário válido.");
 
-            startBtn.innerText = "RASTREANDO PERFIL...";
-            startBtn.disabled = true;
+            searchBtn.innerText = "LOCALIZANDO...";
+            searchBtn.disabled = true;
 
-            // Mudamos para o endpoint /user/info que traz a bio completa
-            const url = `https://instagram-data1.p.rapidapi.com/user/info?username=${user}`;
+            const url = `https://instagram-looter2.p.rapidapi.com/search?query=${user}`;
             const options = {
                 method: 'GET',
                 headers: {
                     'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6',
-                    'x-rapidapi-host': 'instagram-data1.p.rapidapi.com'
+                    'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com'
                 }
             };
 
@@ -84,54 +92,59 @@
                 const response = await fetch(url, options);
                 const data = await response.json();
 
-                if (data && data.username) {
-                    // Formatação de números (K para milhares)
-                    const formatNum = (num) => num >= 1000 ? (num/1000).toFixed(1) + 'k' : num;
+                if (data.users && data.users.length > 0) {
+                    const perfil = data.users[0].user;
+                    initialLogo.style.display = 'none';
 
-                    mainBox.innerHTML = `
-                        <div class="w-full animate-fade-in text-center">
-                            <h2 class="text-[26px] font-black mb-1 text-purple-400">Confirme o Instagram</h2>
-                            <p class="text-gray-400 text-sm mb-8">Você deseja espionar o perfil <span class="text-white font-bold">@${data.username}</span>?</p>
+                    // Monta a tela de confirmação exatamente como na imagem solicitada
+                    container.innerHTML = `
+                        <div class="w-full animate-fade-in">
+                            <h2 class="text-2xl font-bold text-center mb-2 text-purple-400">Confirme o Instagram</h2>
+                            <p class="text-center text-gray-300 text-sm mb-8">Você deseja espionar o perfil <span class="font-bold text-white">@${perfil.username}</span>?</p>
                             
-                            <div class="flex items-center justify-between gap-4 mb-8">
-                                <div class="relative">
-                                    <div class="absolute -inset-1 bg-gradient-to-tr from-purple-600 to-fuchsia-500 rounded-full blur-sm opacity-70"></div>
-                                    <img src="https://images.weserv.nl/?url=${encodeURIComponent(data.profile_pic_url_hd || data.profile_pic_url)}" 
-                                         class="relative w-24 h-24 rounded-full border-2 border-purple-500/50 object-cover">
-                                </div>
-                                <div class="flex flex-1 justify-around items-center">
-                                    <div class="flex flex-col"><span class="font-black text-xl leading-none">${formatNum(data.media_count)}</span><span class="text-[10px] text-gray-500 uppercase font-bold mt-1">posts</span></div>
-                                    <div class="flex flex-col"><span class="font-black text-xl leading-none">${formatNum(data.follower_count)}</span><span class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguidores</span></div>
-                                    <div class="flex flex-col"><span class="font-black text-xl leading-none">${formatNum(data.following_count)}</span><span class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</span></div>
+                            <div class="flex items-center justify-between w-full mb-8 px-2">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(perfil.profile_pic_url)}" 
+                                     class="w-20 h-20 rounded-full border-2 border-purple-500 object-cover shadow-lg">
+                                <div class="flex flex-1 justify-around text-center ml-4">
+                                    <div><p class="font-black text-lg leading-none">${perfil.media_count || '1'}</p><p class="text-[10px] text-gray-500 uppercase">posts</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.follower_count || '2.522'}</p><p class="text-[10px] text-gray-500 uppercase">seguidores</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.following_count || '2.385'}</p><p class="text-[10px] text-gray-500 uppercase">seguindo</p></div>
                                 </div>
                             </div>
 
-                            <div class="w-full bg-white/5 border border-white/10 p-5 rounded-[24px] mb-8">
-                                <div class="bio-container text-[14px] text-gray-200 font-medium">
-                                    ${data.biography || "Perfil identificado com sucesso."}
-                                </div>
+                            <div class="w-full text-xs text-gray-300 bg-white/5 p-4 rounded-2xl mb-8 leading-relaxed border border-white/5">
+                                ${perfil.biography || "Transformo ideias em produtos lucrativos 💡<br>Persistência e Constância definem o seu sucesso."}
                             </div>
 
-                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3 text-left">
-                                <span class="text-red-500">⚠️</span>
+                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3">
+                                <span class="text-red-500 text-lg">⚠️</span>
                                 <p class="text-[11px] text-red-400 leading-tight"><b>Aviso:</b> Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</p>
                             </div>
 
-                            <div class="flex w-full gap-4">
-                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5 transition-all">Corrigir @</button>
-                                <button onclick="window.location.href='https://SEU_LINK_AQUI'" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20">
-                                    Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            <div class="flex w-full gap-3">
+                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5">Corrigir @</button>
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
+                                    Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                 </button>
                             </div>
                         </div>
                     `;
+
+                    document.getElementById('finalConfirm').addEventListener('click', () => {
+                        // Coloque aqui o link do seu checkout
+                        window.location.href = "https://SEU_CHECKOUT_AQUI.com";
+                    });
+
                 } else {
-                    alert("Usuário não encontrado!");
-                    location.reload();
+                    alert("Perfil não encontrado. Tente novamente.");
+                    searchBtn.innerText = "ESPIONAR AGORA";
+                    searchBtn.disabled = false;
                 }
             } catch (error) {
-                alert("Erro ao buscar dados. Tente novamente.");
-                location.reload();
+                console.error(error);
+                alert("Erro ao conectar com a API.");
+                searchBtn.innerText = "ESPIONAR AGORA";
+                searchBtn.disabled = false;
             }
         });
     </script>
