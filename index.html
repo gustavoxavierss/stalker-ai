@@ -3,203 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stalkea AI - Monitoramento Oficial</title>
+    <title>Stalkea AI - Monitoramento</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
+
     <style>
-        /* MANTENDO TODA A ESTÉTICA DO SEU ARQUIVO ORIGINAL */
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
-        .matrix-bg { position: absolute; inset: 0; pointer-events: none; }
-        .matrix-bg-1 {
-          background-image: repeating-linear-gradient(to right, rgba(168,85,247,0.08) 0px, rgba(168,85,247,0.08) 1px, transparent 1px, transparent 10px),
-                            repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, rgba(168,85,247,0.12) 2px, transparent 2px, transparent 20px);
-          animation: matrix-fall 18s linear infinite; opacity: 0.28;
-        }
-        @keyframes matrix-fall { 0% { background-position: 0 0; } 100% { background-position: 0 20px; } }
-        .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .animate-text-shine {
-          background: linear-gradient(90deg, #a855f7 0%, #d8b4fe 25%, #ffffff 50%, #d8b4fe 75%, #a855f7 100%);
-          background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; font-size: 14px; }
-        .blur-extreme { filter: blur(25px); opacity: 0.4; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
+        body { background-color: #050505; color: white; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        #root { min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .scanner-line { height: 2px; background: #a855f7; position: absolute; width: 100%; animation: scan 2s linear infinite; box-shadow: 0 0 15px #a855f7; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .btn-pay { background: linear-gradient(to right, #6B59D8, #9D4EDD); box-shadow: 0 0 25px rgba(107, 89, 216, 0.4); }
+        .insta-gradient { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .cf-gradient { background: #00e05a; }
     </style>
 </head>
 <body>
-    <div id="wrapper" class="min-h-screen relative flex flex-col items-center justify-center px-4 py-8">
-        <div class="matrix-bg matrix-bg-1"></div>
-
-        <div id="mainContainer" class="w-full max-w-[480px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
-            <div id="initialLogo" class="mb-4">
-                <img alt="Stalkea.ai" class="w-64 h-64 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
-            </div>
-
-            <div id="contentArea" class="w-full flex flex-col items-center">
-                <h1 class="text-[28px] md:text-[34px] font-black text-center leading-tight mb-6 -mt-10">
-                    Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
-                </h1>
-                <p class="text-gray-400 text-center text-sm mb-6 uppercase font-bold tracking-widest italic opacity-70">Digite o usuário sem o "@"</p>
-                
-                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
-                    class="w-full mb-6 p-5 rounded-full bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all text-xl shadow-inner">
-                
-                <button id="searchBtn" class="w-full h-[72px] rounded-full font-black text-[22px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.03] active:scale-[0.95] transition-all shadow-lg uppercase italic tracking-tighter">
-                    Espionar Agora
-                </button>
-            </div>
-        </div>
-
-        <div id="footerDisplay" class="mt-8 text-center opacity-60 relative z-10">
-            <p class="text-[#a855f7] font-black text-xs tracking-tight uppercase">+81.595 perfis analisados hoje</p>
-        </div>
-    </div>
+    <div id="root"></div>
 
     <script>
-        let userData = {};
-        const searchBtn = document.getElementById('searchBtn');
-        const input = document.getElementById('usernameInput');
-        const container = document.getElementById('contentArea');
-        const initialLogo = document.getElementById('initialLogo');
-        const mainContainer = document.getElementById('mainContainer');
-        const wrapper = document.getElementById('wrapper');
+        const { useState, useEffect } = React;
 
-        const formatInstagram = (num) => {
-            if (!num && num !== 0) return '0';
-            if (num >= 1000000) return (num / 1000000).toFixed(0) + 'mi';
-            return num.toLocaleString('pt-BR');
+        const API_CONFIG = {
+            host: 'instagram-looter2.p.rapidapi.com',
+            key: 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6'
         };
 
-        // PESQUISA E ETAPA 2: CONFIRMAÇÃO (INJEÇÃO DE APIS)
-        searchBtn.addEventListener('click', async () => {
-            const user = input.value.trim().replace('@', '');
-            if (!user) return alert("Por favor, digite um usuário.");
-            searchBtn.innerText = "RASTREANDO...";
-            searchBtn.disabled = true;
+        const App = () => {
+            const [step, setStep] = useState('search');
+            const [activeTab, setActiveTab] = useState('feed'); // feed ou messages
+            const [username, setUsername] = useState('');
+            const [targetData, setTargetData] = useState(null);
+            const [posts, setPosts] = useState([]);
+            const [related, setRelated] = useState([]);
+            const [loading, setLoading] = useState(false);
 
-            try {
-                // Chamada da API Profile2 conforme solicitado
-                const response = await fetch(`https://instagram-looter2.p.rapidapi.com/profile2?username=${user}`, {
-                    headers: { 
-                        'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6', 
-                        'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com' 
-                    }
-                });
-                userData = await response.json();
-                
-                if (userData && userData.username) {
-                    initialLogo.style.display = 'none';
-                    container.innerHTML = `
-                        <div class="w-full animate-fade-in text-center">
-                            <h2 class="text-2xl font-black mb-2 text-purple-400 italic uppercase">Confirmar Instagram</h2>
-                            <p class="text-gray-300 text-sm mb-8 px-4">Deseja espionar <span class="font-bold text-white">@${userData.username}</span>?</p>
-                            <div class="flex items-center justify-between w-full mb-8 px-2">
-                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-24 h-24 rounded-full border-2 border-purple-500 object-cover shadow-2xl">
-                                <div class="flex flex-1 justify-around text-center ml-4">
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.media_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.follower_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.following_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
-                                </div>
-                            </div>
-                            <div class="w-full bg-white/5 p-5 rounded-[32px] mb-8 border border-white/5 bio-style">
-                                ${userData.biography || "Perfil identificado com sucesso."}
-                            </div>
-                            <button id="finalConfirm" class="w-full h-16 rounded-full bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-tighter shadow-lg">Confirmar e Continuar ➔</button>
-                        </div>
-                    `;
-                    document.getElementById('finalConfirm').addEventListener('click', startSimulation);
-                } else { throw new Error(); }
-            } catch (e) { alert("Usuário não encontrado!"); searchBtn.innerText = "Espionar Agora"; searchBtn.disabled = false; }
-        });
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            }, [step, activeTab]);
 
-        // SIMULAÇÃO DE EXTRAÇÃO
-        function startSimulation() {
-            container.innerHTML = `
-                <div class="w-full text-center py-10 animate-fade-in">
-                    <h2 class="text-2xl font-black mb-6 animate-pulse uppercase italic tracking-widest text-purple-400">Extraindo Dados...</h2>
-                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-4"><div id="pFill" class="progress-fill"></div></div>
-                    <p id="pStatus" class="text-gray-400 font-bold text-[11px] uppercase tracking-widest italic opacity-80">Quebrando criptografia de mensagens...</p>
-                </div>
-            `;
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress >= 100) { clearInterval(interval); showFinalDashboard(); }
-                document.getElementById('pFill').style.width = progress + '%';
-            }, 500);
-        }
+            const fetchInstagramData = async (user) => {
+                if (!user) return;
+                setLoading(true);
+                try {
+                    // 1. Buscar Perfil
+                    const profileRes = await fetch(`https://${API_CONFIG.host}/web-profile?username=${user.toLowerCase()}`, {
+                        headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
+                    });
+                    const data = await profileRes.json();
+                    if (!data || !data.id) throw new Error("User not found");
+                    setTargetData(data);
 
-        // ETAPA FINAL: INTERFACE DE RESULTADOS (PAYWALL)
-        function showFinalDashboard() {
-            wrapper.className = "bg-[#0a0a0a] min-h-screen py-6 flex flex-col items-center";
-            wrapper.innerHTML = `
-                <div class="w-full max-w-[480px] animate-fade-in px-4">
-                    <div class="flex flex-col items-center py-6 border-b border-white/5 mb-8 text-center">
-                        <img src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png" class="w-12 mb-2 opacity-80">
-                        <h2 class="text-[9px] font-black tracking-[0.2em] text-gray-500 uppercase italic">A maior ferramenta de Stalker do Brasil</h2>
-                    </div>
+                    // 2. Buscar Feed
+                    const feedRes = await fetch(`https://${API_CONFIG.host}/user-feeds2?id=${data.id}&count=12`, {
+                        headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
+                    });
+                    const feedData = await feedRes.json();
+                    setPosts(feedData.items || []);
 
-                    <div class="bg-purple-600/20 border border-purple-500/40 p-5 rounded-3xl text-center mb-10">
-                        <p class="text-[10px] font-black uppercase tracking-tighter leading-relaxed">
-                            ESPIONAGEM 100% FINALIZADA! 🕵️<br>
-                            <span class="text-purple-300">ADQUIRA SEU ACESSO VIP E TENHA ACESSO A:</span>
-                        </p>
-                    </div>
+                    // 3. Buscar Perfis Relacionados (Para os Stories)
+                    const relatedRes = await fetch(`https://${API_CONFIG.host}/related-profiles?id=${data.id}`, {
+                        headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
+                    });
+                    const relatedData = await relatedRes.json();
+                    setRelated(relatedData.users || []);
 
-                    <div class="mb-12 text-center">
-                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📍 Localização em tempo real</h4>
-                        <div class="relative w-full h-44 rounded-[40px] overflow-hidden border border-white/5 bg-zinc-900 shadow-xl">
-                            <img src="https://i.ibb.co/L5Z5v5z/map-bg.png" class="w-full h-full object-cover opacity-20 blur-[1px]">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="relative">
-                                    <div class="absolute -inset-4 bg-purple-500 rounded-full animate-ping opacity-30"></div>
-                                    <img src="https://i.ibb.co/gMvJHcyP/map-marker.png" class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl object-cover">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    setStep('confirming');
+                } catch (err) {
+                    alert("Erro ao acessar dados. Verifique o limite da API ou o nome do usuário.");
+                } finally {
+                    setLoading(false);
+                }
+            };
 
-                    <div class="mb-12 text-center flex flex-col items-center">
-                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60 italic">📷 Mídias e fotos privadas (Explícito)</h4>
-                        <div class="relative w-full aspect-square rounded-[40px] overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
-                            <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
-                            <div class="absolute inset-0 flex items-center justify-center text-white/40 text-6xl">🔒</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-12 text-center">
-                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">💬 Mensagens sensíveis do Direct</h4>
-                        <div class="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 relative overflow-hidden">
-                            <div class="flex items-start gap-3 mb-6 opacity-40 blur-[6px]">
-                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-10 h-10 rounded-full border border-purple-500">
-                                <div class="bg-zinc-800 p-4 rounded-3xl rounded-tl-none text-[12px] text-left italic text-gray-300">"Quero te ver agora... como fazemos?"</div>
-                            </div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[11px] shadow-2xl uppercase italic tracking-widest">🔒 Revelar Direct</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-8 bg-gradient-to-b from-purple-600/30 to-black border border-purple-500/40 rounded-[50px] text-center shadow-[0_0_60px_rgba(168,85,247,0.2)] mb-20">
-                        <p class="text-[10px] text-gray-500 line-through font-black mb-1 uppercase tracking-widest italic opacity-50">De R$ 197,00 por apenas</p>
-                        <div class="flex items-start justify-center gap-1 mb-8 italic text-white">
-                            <span class="text-2xl font-black mt-2">R$</span>
-                            <span class="text-7xl font-black tracking-tighter">27,00</span>
-                        </div>
-                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" 
-                            class="w-full h-20 rounded-3xl btn-pay font-black text-xl uppercase italic tracking-widest hover:scale-[1.03] transition-transform">
-                            Liberar Acesso Agora
+            // TELA 1: BUSCA
+            if (step === 'search') return (
+                <div className="flex flex-col items-center justify-center p-6 text-center min-h-screen">
+                    <h1 className="text-4xl font-black mb-2 italic tracking-tighter">STALKEA <span className="text-purple-500">AI</span></h1>
+                    <p className="text-gray-400 mb-8 text-sm">Monitoramento de banco de dados em tempo real.</p>
+                    <div className="w-full max-w-sm glass p-6 rounded-[30px]">
+                        <input 
+                            type="text" 
+                            placeholder="@usuario_alvo" 
+                            className="w-full bg-white/5 border border-white/10 p-4 rounded-full mb-4 text-center font-bold text-white outline-none focus:border-purple-500"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <button 
+                            onClick={() => fetchInstagramData(username)}
+                            className="w-full py-4 rounded-full bg-purple-600 font-bold uppercase hover:bg-purple-500 transition-all shadow-lg shadow-purple-500/20"
+                        >
+                            {loading ? 'Conectando...' : 'Hackear Agora'}
                         </button>
-                        <p class="mt-6 text-[10px] text-gray-600 font-black uppercase tracking-widest italic opacity-70 italic">Acesso enviado imediatamente via e-mail</p>
                     </div>
                 </div>
-            `;
-        }
+            );
+
+            // TELA 2: CONFIRMAÇÃO
+            if (step === 'confirming') return (
+                <div className="flex flex-col items-center justify-center p-6 min-h-screen">
+                    <div className="w-full max-w-sm glass p-8 rounded-[40px] text-center border-purple-500/30">
+                        <div className="relative inline-block">
+                             <img src={targetData.profile_pic_url} className="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-purple-500 p-1 object-cover" />
+                             <div className="absolute bottom-4 right-0 bg-blue-500 rounded-full p-1"><i data-lucide="check" className="w-3 h-3 text-white"></i></div>
+                        </div>
+                        <h2 className="text-2xl font-bold">@{targetData.username}</h2>
+                        <div className="flex justify-around my-6 border-y border-white/10 py-4 text-sm">
+                            <div><p className="font-bold">{targetData.edge_followed_by?.count?.toLocaleString() || '0'}</p><p className="text-gray-500">Seguidores</p></div>
+                            <div><p className="font-bold">{targetData.edge_follow?.count?.toLocaleString() || '0'}</p><p className="text-gray-500">Seguindo</p></div>
+                        </div>
+                        <button onClick={() => setStep('hacking')} className="w-full py-4 rounded-xl bg-purple-600 font-bold">INICIAR MONITORAMENTO</button>
+                    </div>
+                </div>
+            );
+
+            // TELA 3: HACKING
+            if (step === 'hacking') return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-8">
+                    <div className="w-full max-w-xs relative">
+                        <div className="scanner-line"></div>
+                        <div className="glass p-6 rounded-xl border-purple-500/50">
+                            <p className="text-purple-500 text-[10px] mb-2 font-mono">EXTRAINDO DIRETÓRIOS PRIVADOS...</p>
+                            <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                <div className="bg-purple-600 h-full transition-all duration-100" id="progress-bar" style={{width: '0%'}}></div>
+                            </div>
+                            <p className="text-right text-purple-500 text-[10px] mt-2 font-mono" id="progress-text">0%</p>
+                        </div>
+                    </div>
+                    <script>
+                        {(() => {
+                            let p = 0;
+                            const interval = setInterval(() => {
+                                p++;
+                                if(document.getElementById('progress-bar')) {
+                                    document.getElementById('progress-bar').style.width = p + '%';
+                                    document.getElementById('progress-text').innerText = p + '%';
+                                }
+                                if(p >= 100) { clearInterval(interval); setTimeout(() => setStep('dashboard'), 500); }
+                            }, 50)
+                        })()}
+                    </script>
+                </div>
+            );
+
+            // TELA 4: DASHBOARD (SIMULAÇÃO INSTAGRAM)
+            if (step === 'dashboard') return (
+                <div className="max-w-md mx-auto min-h-screen bg-black relative pb-20 border-x border-white/10">
+                    <header className="p-4 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black z-50">
+                        <span className="font-bold text-xl italic tracking-tighter">Instagram</span>
+                        <div className="flex gap-5">
+                            <i data-lucide="plus-square" className="w-6 h-6"></i>
+                            <i data-lucide="heart" className="w-6 h-6"></i>
+                            <div className="relative" onClick={() => setActiveTab('messages')}>
+                                <i data-lucide="message-circle" className="w-6 h-6"></i>
+                                <span className="absolute -top-1 -right-1 bg-red-600 text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    {activeTab === 'feed' ? (
+                        <div className="animate-in fade-in duration-500">
+                            {/* Stories */}
+                            <div className="flex p-4 gap-4 overflow-x-auto no-scrollbar border-b border-white/10 bg-black/50">
+                                {/* Close Friend Story */}
+                                <div className="flex flex-col items-center gap-1 shrink-0">
+                                    <div className="w-[72px] h-[72px] rounded-full cf-gradient p-[3px]">
+                                        <div className="bg-black rounded-full p-[2px] h-full w-full">
+                                            <img src={targetData.profile_pic_url} className="w-full h-full rounded-full object-cover" />
+                                        </div>
+                                    </div>
+                                    <span className="text-[11px] text-green-500 font-medium">Amigos Próximos</span>
+                                </div>
+                                {/* Related Stories */}
+                                {related.map((user, i) => (
+                                    <div key={i} className="flex flex-col items-center gap-1 shrink-0">
+                                        <div className="w-[72px] h-[72px] rounded-full insta-gradient p-[3px]">
+                                            <div className="bg-black rounded-full p-[2px] h-full w-full">
+                                                <img src={user.profile_pic_url} className="w-full h-full rounded-full object-cover" />
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] text-gray-400 truncate w-16 text-center">{user.username}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Feed Posts */}
+                            <div className="space-y-4">
+                                {posts.map((p, i) => (
+                                    <div key={i} className="border-b border-white/5 pb-4">
+                                        <div className="p-3 flex items-center gap-2">
+                                            <img src={targetData.profile_pic_url} className="w-8 h-8 rounded-full object-cover" />
+                                            <span className="font-bold text-xs">{targetData.username}</span>
+                                            <i data-lucide="more-horizontal" className="ml-auto w-4 h-4 text-gray-500"></i>
+                                        </div>
+                                        <div className="bg-zinc-900 aspect-square flex items-center justify-center overflow-hidden">
+                                            <img src={p.image_versions2?.candidates?.[0]?.url} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="p-3 space-y-2">
+                                            <div className="flex gap-4">
+                                                <i data-lucide="heart" className="w-6 h-6"></i>
+                                                <i data-lucide="message-circle" className="w-6 h-6"></i>
+                                                <i data-lucide="send" className="w-6 h-6"></i>
+                                                <i data-lucide="bookmark" className="ml-auto w-6 h-6"></i>
+                                            </div>
+                                            <p className="text-xs font-bold">{Math.floor(Math.random() * 5000)} curtidas</p>
+                                            <p className="text-xs"><span className="font-bold mr-2">{targetData.username}</span>{p.caption?.text?.substring(0, 100) || "Visualizando conteúdo restrito..."}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        /* Tela de Mensagens (Directs Projetados) */
+                        <div className="p-4 animate-in slide-in-from-right duration-300">
+                            <div className="flex items-center gap-4 mb-6">
+                                <i data-lucide="arrow-left" className="w-6 h-6" onClick={() => setActiveTab('feed')}></i>
+                                <span className="font-bold text-lg">{targetData.username}</span>
+                            </div>
+                            <div className="space-y-6">
+                                {[
+                                    { user: 'contato_off_01', msg: 'Aonde você tá? Me responde!', time: '2m', unread: true },
+                                    { user: 'amante_secreto', msg: 'Aquele lugar de sempre hoje?', time: '15m', unread: true },
+                                    { user: 'ex_contato', msg: 'Apaga aquela foto por favor.', time: '1h', unread: true },
+                                    { user: 'trabalho_rh', msg: 'O relatório está pronto?', time: '4h', unread: false }
+                                ].map((chat, i) => (
+                                    <div key={i} className="flex items-center gap-3">
+                                        <div className="w-14 h-14 rounded-full bg-zinc-800 shrink-0 overflow-hidden">
+                                            <img src={`https://i.pravatar.cc/150?u=${chat.user}`} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className={`text-sm ${chat.unread ? 'font-bold' : 'text-gray-400'}`}>{chat.user}</p>
+                                            <p className={`text-xs ${chat.unread ? 'text-white' : 'text-gray-500'} truncate w-48`}>{chat.msg}</p>
+                                        </div>
+                                        <div className="text-[10px] text-gray-500 flex flex-col items-end gap-1">
+                                            <span>{chat.time}</span>
+                                            {chat.unread && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Bottom Nav */}
+                    <nav className="fixed bottom-0 max-w-md w-full bg-black border-t border-white/10 flex justify-around p-4 z-50">
+                        <i data-lucide="home" className={activeTab === 'feed' ? 'text-white' : 'text-gray-500'} onClick={() => setActiveTab('feed')}></i>
+                        <i data-lucide="search" className="text-gray-500"></i>
+                        <i data-lucide="clapperboard" className="text-gray-500"></i>
+                        <i data-lucide="shopping-bag" className="text-gray-500"></i>
+                        <img src={targetData.profile_pic_url} className="w-6 h-6 rounded-full border border-white/20" />
+                    </nav>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
