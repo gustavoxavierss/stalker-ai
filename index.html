@@ -3,191 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stalkea AI - Monitoramento</title>
+    <title>Stalkea AI - Monitoramento Oficial</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1408422817609246');
+        fbq('track', 'PageView');
+    </script>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #050505; color: white; margin: 0; font-family: sans-serif; }
-        #root { min-height: 100vh; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .scanner-line { height: 2px; background: #a855f7; position: absolute; width: 100%; animation: scan 2s linear infinite; box-shadow: 0 0 15px #a855f7; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
+        .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
+        .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
+        @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
+        .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-text-shine {
+            background: linear-gradient(90deg, #a855f7, #d8b4fe, #ffffff, #a855f7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; font-size: 14px; }
+        .blur-extreme { filter: blur(25px); opacity: 0.4; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
+        .story-ring-cf { background: #4fce5d; padding: 2px; border-radius: 50%; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .btn-pay { background: linear-gradient(to right, #6B59D8, #9D4EDD); box-shadow: 0 0 25px rgba(107, 89, 216, 0.4); }
     </style>
 </head>
 <body>
-    <div id="root">
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-            <div style="width: 40px; height: 40px; border: 3px solid #a855f7; border-top-color: transparent; border-radius: 50%; animate: spin 1s linear infinite;"></div>
+    <div id="wrapper" class="min-h-screen relative flex flex-col items-center justify-center px-4 py-8">
+        <div class="matrix-bg matrix-bg-1"></div>
+
+        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
+            <div id="initialLogo" class="mb-4">
+                <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
+            </div>
+
+            <div id="contentArea" class="w-full flex flex-col items-center">
+                <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
+                    Não fique na <span class="animate-text-shine text-transparent">dúvida</span>. Descubra a verdade agora.
+                </h1>
+                <p class="text-gray-400 text-center text-sm mb-6 uppercase font-bold tracking-widest italic opacity-70">Digite o usuário sem o "@"</p>
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" class="w-full mb-6 p-5 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
+                <button id="searchBtn" class="w-full h-[70px] rounded-full font-black text-[22px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.03] active:scale-[0.95] transition-all shadow-lg uppercase italic tracking-tighter">
+                    Espionar Agora
+                </button>
+            </div>
+        </div>
+
+        <div id="footerDisplay" class="mt-8 text-center opacity-60 relative z-10">
+            <p class="text-[#a855f7] font-black text-xs tracking-tight uppercase">+81.595 perfis analisados hoje</p>
         </div>
     </div>
 
-    <script type="text/babel">
-        // Este bloco script será processado pelo navegador
-    </script>
-
     <script>
-        const { useState, useEffect } = React;
+        let userData = {};
+        const searchBtn = document.getElementById('searchBtn');
+        const input = document.getElementById('usernameInput');
+        const container = document.getElementById('contentArea');
+        const initialLogo = document.getElementById('initialLogo');
+        const mainContainer = document.getElementById('mainContainer');
+        const wrapper = document.getElementById('wrapper');
 
-        const API_CONFIG = {
-            host: 'instagram-looter2.p.rapidapi.com',
-            key: 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6'
+        const formatInstagram = (num) => {
+            if (!num && num !== 0) return '0';
+            if (num >= 1000000) return (num / 1000000).toFixed(0) + 'mi';
+            return num.toLocaleString('pt-BR');
         };
 
-        const App = () => {
-            const [step, setStep] = useState('search');
-            const [username, setUsername] = useState('');
-            const [targetData, setTargetData] = useState(null);
-            const [posts, setPosts] = useState([]);
-            const [loading, setLoading] = useState(false);
+        // PESQUISA E PARTE 2: CONFIRMAÇÃO
+        searchBtn.addEventListener('click', async () => {
+            const user = input.value.trim().replace('@', '');
+            if (!user) return alert("Digite um usuário válido.");
+            searchBtn.innerText = "RASTREANDO...";
+            searchBtn.disabled = true;
 
-            // Inicializa ícones sempre que o step muda
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [step]);
-
-            const fetchInstagramData = async (user) => {
-                if (!user) return;
-                setLoading(true);
-                try {
-                    const profileRes = await fetch(`https://${API_CONFIG.host}/web-profile?username=${user.toLowerCase()}`, {
-                        headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
-                    });
-                    const data = await profileRes.json();
-                    
-                    if (!data || !data.id) throw new Error("User not found");
-                    
-                    setTargetData(data);
-
-                    const feedRes = await fetch(`https://${API_CONFIG.host}/user-feeds2?id=${data.id}&count=12`, {
-                        headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
-                    });
-                    const feedData = await feedRes.json();
-                    setPosts(feedData.items || []);
-
-                    setStep('confirming');
-                } catch (err) {
-                    alert("Usuário não encontrado ou erro na API.");
-                } finally {
-                    setLoading(false);
-                }
-            };
-
-            // TELA 1: BUSCA
-            if (step === 'search') return (
-                <div className="flex flex-col items-center justify-center p-6 text-center min-h-screen">
-                    <h1 className="text-4xl font-black mb-2 italic">STALKEA <span className="text-purple-500">AI</span></h1>
-                    <p className="text-gray-400 mb-8">O monitor de perfis mais avançado do mundo.</p>
-                    <div className="w-full max-w-sm glass p-6 rounded-[30px]">
-                        <input 
-                            type="text" 
-                            placeholder="@usuario_alvo" 
-                            className="w-full bg-white/5 border border-white/10 p-4 rounded-full mb-4 text-center font-bold text-white outline-none focus:border-purple-500"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <button 
-                            onClick={() => fetchInstagramData(username)}
-                            className="w-full py-4 rounded-full bg-purple-600 font-bold uppercase hover:bg-purple-500 transition-all"
-                        >
-                            {loading ? 'Rastreando...' : 'Hackear Agora'}
-                        </button>
-                    </div>
-                </div>
-            );
-
-            // TELA 2: CONFIRMAÇÃO
-            if (step === 'confirming') return (
-                <div className="flex flex-col items-center justify-center p-6 min-h-screen">
-                    <div className="w-full max-w-sm glass p-8 rounded-[40px] text-center border-purple-500/30">
-                        <img src={targetData.profile_pic_url} className="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-purple-500 p-1" />
-                        <h2 className="text-2xl font-bold">@{targetData.username}</h2>
-                        <div className="flex justify-around my-6 border-y border-white/10 py-4 text-sm">
-                            <div><p className="font-bold">{targetData.edge_followed_by?.count || '0'}</p><p className="text-gray-500">Seguidores</p></div>
-                            <div><p className="font-bold">{targetData.edge_follow?.count || '0'}</p><p className="text-gray-500">Seguindo</p></div>
-                        </div>
-                        <button onClick={() => setStep('hacking')} className="w-full py-4 rounded-xl bg-purple-600 font-bold">Este é o alvo</button>
-                    </div>
-                </div>
-            );
-
-            // TELA 3: HACKING
-            if (step === 'hacking') return <HackingAnimation onComplete={() => setStep('dashboard')} />;
-
-            // TELA 4: DASHBOARD (INSTAGRAM SIMULADO)
-            if (step === 'dashboard') return (
-                <div className="max-w-md mx-auto min-h-screen bg-black relative pb-20">
-                    <header className="p-4 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black z-50">
-                        <span className="font-bold text-xl italic">Instagram AI</span>
-                        <div className="flex gap-4"><i data-lucide="heart"></i><i data-lucide="message-circle"></i></div>
-                    </header>
-                    
-                    {/* Stories */}
-                    <div className="flex p-4 gap-4 overflow-x-auto no-scrollbar border-b border-white/10">
-                        <div className="flex flex-col items-center gap-1 shrink-0">
-                            <div className="w-16 h-16 rounded-full border-2 border-green-500 p-1">
-                                <img src={targetData.profile_pic_url} className="w-full h-full rounded-full object-cover" />
-                            </div>
-                            <span className="text-[10px] text-green-500">Amigos Próximos</span>
-                        </div>
-                    </div>
-
-                    {/* Feed Reais */}
-                    <div className="space-y-6">
-                        {posts.length > 0 ? posts.map((p, i) => (
-                            <div key={i}>
-                                <div className="p-3 flex items-center gap-2">
-                                    <img src={targetData.profile_pic_url} className="w-8 h-8 rounded-full" />
-                                    <span className="font-bold text-sm">{targetData.username}</span>
+            try {
+                // Chamada da API Profile2 conforme solicitado
+                const response = await fetch(`https://instagram-looter2.p.rapidapi.com/profile2?username=${user}`, {
+                    headers: { 
+                        'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6', 
+                        'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com' 
+                    }
+                });
+                userData = await response.json();
+                
+                if (userData && userData.username) {
+                    initialLogo.style.display = 'none';
+                    container.innerHTML = `
+                        <div class="w-full animate-fade-in text-center">
+                            <h2 class="text-2xl font-black mb-2 text-purple-400 italic">Confirmar Perfil</h2>
+                            <p class="text-gray-300 text-sm mb-8">Deseja espionar <span class="font-bold text-white">@${userData.username}</span>?</p>
+                            <div class="flex items-center justify-between w-full mb-8 px-2">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-24 h-24 rounded-full border-2 border-purple-500 object-cover shadow-2xl">
+                                <div class="flex flex-1 justify-around text-center ml-4">
+                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${userData.media_count || '0'}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
+                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${formatInstagram(userData.follower_count)}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
+                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${userData.following_count.toLocaleString('pt-BR')}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
                                 </div>
-                                <img src={p.image_versions2?.candidates?.[0]?.url} className="w-full" />
                             </div>
-                        )) : <p className="text-center p-10 text-gray-500">Nenhuma mídia encontrada.</p>}
-                    </div>
+                            <div class="w-full bg-white/5 p-5 rounded-[32px] mb-8 border border-white/5 bio-style">
+                                ${userData.biography || "Perfil identificado e pronto para extração."}
+                            </div>
+                            <button id="finalConfirm" class="w-full h-16 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-tighter shadow-lg">Confirmar e Acessar ➔</button>
+                        </div>
+                    `;
+                    document.getElementById('finalConfirm').addEventListener('click', startSimulation);
+                }
+            } catch (e) { alert("Erro ao carregar perfil."); searchBtn.disabled = false; }
+        });
 
-                    <nav className="fixed bottom-0 max-w-md w-full bg-black border-t border-white/10 flex justify-around p-4">
-                        <i data-lucide="home"></i><i data-lucide="search"></i><i data-lucide="play"></i><i data-lucide="user"></i>
-                    </nav>
+        // SIMULAÇÃO TÉCNICA
+        function startSimulation() {
+            container.innerHTML = `
+                <div class="w-full text-center py-10 animate-fade-in">
+                    <h2 class="text-2xl font-black mb-6 animate-pulse uppercase italic tracking-widest">Extraindo Dados...</h2>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-4"><div id="pFill" class="progress-fill"></div></div>
+                    <p id="pStatus" class="text-purple-400 font-bold text-[10px] uppercase tracking-widest italic opacity-80">Quebrando criptografia de mensagens...</p>
                 </div>
-            );
-        };
+            `;
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 12;
+                if (progress >= 100) { clearInterval(interval); showInstagramInterface(); }
+                document.getElementById('pFill').style.width = progress + '%';
+            }, 500);
+        }
 
-        const HackingAnimation = ({ onComplete }) => {
-            const [progress, setProgress] = useState(0);
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    setProgress(p => {
-                        if (p >= 100) { clearInterval(interval); setTimeout(onComplete, 1000); return 100; }
-                        return p + 1;
-                    });
-                }, 40);
-                return () => clearInterval(interval);
-            }, []);
-            return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-8">
-                    <div className="w-full max-w-xs relative">
-                        <div className="scanner-line"></div>
-                        <div className="glass p-6 rounded-xl border-purple-500/50">
-                            <p className="text-purple-500 text-xs mb-2 font-mono">EXTRAINDO PACOTES DE DADOS...</p>
-                            <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-purple-600 h-full" style={{width: `${progress}%`}}></div>
-                            </div>
-                            <p className="text-right text-purple-500 text-xs mt-2">{progress}%</p>
+        // PARTE 3: INTERFACE DO INSTAGRAM SIMULADA
+        function showInstagramInterface() {
+            wrapper.className = "bg-black min-h-screen py-6 flex flex-col items-center";
+            wrapper.innerHTML = `
+                <div class="w-full max-w-[430px] flex flex-col animate-fade-in px-4">
+                    <div class="flex justify-between items-center mb-6 px-2">
+                        <span class="font-black text-2xl italic tracking-tighter uppercase">Instagram</span>
+                        <div class="flex gap-5 text-xl">
+                            <span>📷</span>
+                            <div class="relative"><span>💬</span><div class="absolute -top-1 -right-1 bg-red-500 text-[9px] px-1 rounded-full font-bold">12</div></div>
                         </div>
                     </div>
-                </div>
-            );
-        };
 
-        // Renderização Final
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App));
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar mb-8">
+                        <div class="flex flex-col items-center min-w-[72px]">
+                            <div class="story-ring-cf w-16 h-16"><img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-full h-full rounded-full border-2 border-black object-cover blur-sm"></div>
+                            <span class="text-[10px] mt-1 font-bold text-green-500">Amigos Próximos</span>
+                        </div>
+                        ${[1,2,3,4].map(i => `<div class="flex flex-col items-center min-w-[72px] opacity-40"><div class="w-16 h-16 rounded-full border-2 border-purple-500 p-1"><div class="w-full h-full rounded-full bg-zinc-900"></div></div><span class="text-[10px] mt-1 text-gray-500">user_${i}...</span></div>`).join('')}
+                    </div>
+
+                    <div class="flex-1 space-y-8 mb-12">
+                        <h2 class="text-xs font-black uppercase tracking-widest text-gray-500 italic">Mensagens Diretas Extraídas</h2>
+                        
+                        <div class="flex items-center gap-4 group cursor-pointer" onclick="showPaywall()">
+                            <div class="w-14 h-14 rounded-full bg-purple-900/40 flex items-center justify-center text-xl">🔞</div>
+                            <div class="flex-1 border-b border-white/5 pb-4">
+                                <div class="flex justify-between mb-1"><span class="font-bold text-sm">B**** G**** (D****)</span><span class="text-gray-500 text-[10px]">Agora</span></div>
+                                <div class="text-[12px] text-purple-400 font-medium"><span class="filter blur-[5px]">"Nossa, olha o que eu acabei de fazer..."</span> 📸 Foto</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 opacity-90" onclick="showPaywall()">
+                            <div class="w-14 h-14 rounded-full bg-white/5 overflow-hidden"><img src="https://i.pravatar.cc/150?u=12" class="w-full h-full object-cover blur-md"></div>
+                            <div class="flex-1 border-b border-white/5 pb-4">
+                                <div class="flex justify-between mb-1"><span class="font-bold text-sm">L**** M****</span><span class="text-gray-500 text-[10px]">15min</span></div>
+                                <div class="text-[12px] text-red-500 font-bold"><span class="filter blur-[5px]">"Quero você agora, vem ver esse vídeo..."</span> 🎥 Vídeo</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic">Conteúdo de Visualização Única</h3>
+                            <div class="relative w-full aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl" onclick="showPaywall()">
+                                <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
+                                <div class="absolute inset-0 flex items-center justify-center text-white/40 text-5xl">🔒</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="showPaywall()" class="w-full h-20 btn-pay rounded-3xl font-black text-lg uppercase italic tracking-widest animate-pulse">Desbloquear Histórico 🔓</button>
+                </div>
+
+                <div id="paywall" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col items-center justify-center p-8 text-center">
+                    <div class="w-full max-w-[380px] p-8 border-2 border-purple-600 rounded-[40px] bg-zinc-900/50 shadow-[0_0_50px_rgba(168,85,247,0.3)]">
+                        <span class="text-6xl block mb-6">🔒</span>
+                        <h2 class="text-2xl font-black italic mb-4 uppercase">Acesso Bloqueado</h2>
+                        <p class="text-gray-400 text-sm mb-8 leading-relaxed italic">Localizamos <span class="text-white font-bold">conversas picantes</span> e <span class="text-white font-bold">mídias ocultas</span>. Pague uma taxa única para liberar.</p>
+                        <div class="bg-black/40 rounded-3xl p-6 mb-8 border border-white/5 italic">
+                            <p class="text-xs text-gray-500 line-through font-bold">DE R$ 197,00 POR</p>
+                            <p class="text-5xl font-black italic tracking-tighter">R$ 27,00</p>
+                        </div>
+                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" class="w-full h-20 btn-pay rounded-3xl font-black text-xl uppercase italic tracking-widest">Liberar Agora</button>
+                        <p class="mt-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">Acesso Imediato • Garantia de 7 Dias</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showPaywall() { document.getElementById('paywall').classList.remove('hidden'); document.getElementById('paywall').classList.add('flex'); }
     </script>
 </body>
 </html>
