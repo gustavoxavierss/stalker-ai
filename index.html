@@ -5,167 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stalkea AI - Monitoramento Oficial</title>
     
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1408422817609246');
+        fbq('track', 'PageView');
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
-        .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.2; z-index: 0; }
-        .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.1) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; }
+        .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
+        .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
         @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
-        .glass { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .insta-grid-item { aspect-ratio: 1 / 1; overflow: hidden; background: #121212; border: 1px solid #262626; }
-        .insta-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-text-shine {
+            background: linear-gradient(90deg, #a855f7, #d8b4fe, #ffffff, #a855f7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
 <body>
-    <div class="min-h-screen relative flex flex-col items-center p-4 pt-10">
+    <div class="min-h-screen relative flex flex-col items-center justify-center px-4">
         <div class="matrix-bg matrix-bg-1"></div>
 
-        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl animate-fade">
+        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl">
+            
             <div id="initialLogo" class="mb-4">
-                <img alt="Stalkea.ai" class="w-32 h-32 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
+                <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
             </div>
 
-            <div id="contentArea" class="w-full flex flex-col items-center text-center">
-                <h1 class="text-2xl md:text-3xl font-black mb-6">Descubra a verdade agora.</h1>
-                <input type="text" id="usernameInput" placeholder="Digite o usuário sem @" 
+            <div id="contentArea" class="w-full flex flex-col items-center">
+                <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
+                    Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
+                </h1>
+
+                <p class="text-gray-400 text-center text-sm mb-6">Digite o nome de usuário sem o "@"</p>
+
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
                     class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
-                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[18px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] shadow-lg active:scale-95 transition-all">
+
+                <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg">
                     ESPIONAR AGORA
                 </button>
             </div>
         </div>
 
-        <div id="instaInterface" class="hidden w-full max-w-[600px] z-20 animate-fade">
-            <div class="bg-black min-h-screen border-x border-white/10 pb-20">
-                <div class="p-6 space-y-4">
-                    <div class="flex items-center gap-6">
-                        <img id="insta-pfp" src="" class="w-20 h-20 rounded-full border border-white/20 p-1 object-cover">
-                        <div class="flex-1 grid grid-cols-3 text-center gap-2">
-                            <div><b id="insta-posts" class="block text-sm">0</b><span class="text-[10px] text-gray-400 uppercase">Posts</span></div>
-                            <div><b id="insta-followers" class="block text-sm">0</b><span class="text-[10px] text-gray-400 uppercase">Seguidores</span></div>
-                            <div><b id="insta-following" class="block text-sm">0</b><span class="text-[10px] text-gray-400 uppercase">Seguindo</span></div>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 id="insta-name" class="font-bold">Nome</h2>
-                        <p id="insta-bio" class="text-sm text-gray-300 whitespace-pre-wrap"></p>
-                    </div>
-                </div>
-
-                <div class="flex border-t border-white/10 text-gray-500">
-                    <div class="flex-1 text-center py-3 border-t border-white -mt-[1px] text-white">
-                        <svg class="w-6 h-6 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 18H4V4h16v16z"/></svg>
-                    </div>
-                    <div class="flex-1 text-center py-3 opacity-40">
-                        <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-width="2"/></svg>
-                    </div>
-                </div>
-
-                <div id="insta-feed" class="grid grid-cols-3 gap-1 p-0.5">
-                    </div>
-            </div>
+        <div class="mt-8 text-center opacity-60">
+            <p class="text-[#a855f7] font-black text-sm">+81.595 perfis analisados hoje</p>
         </div>
     </div>
 
     <script>
-        const API_KEY = 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6';
-        const API_HOST = 'instagram-looter2.p.rapidapi.com';
+        const searchBtn = document.getElementById('searchBtn');
+        const input = document.getElementById('usernameInput');
+        const container = document.getElementById('contentArea');
+        const initialLogo = document.getElementById('initialLogo');
 
-        let targetData = null; // Armazena os dados do alvo
+        searchBtn.addEventListener('click', async () => {
+            const user = input.value.trim().replace('@', '');
+            if (!user) return alert("Digite um usuário válido.");
 
-        document.getElementById('searchBtn').addEventListener('click', async () => {
-            const user = document.getElementById('usernameInput').value.trim().replace('@', '');
-            if (!user) return alert("Digite um usuário.");
+            searchBtn.innerText = "LOCALIZANDO...";
+            searchBtn.disabled = true;
 
-            const btn = document.getElementById('searchBtn');
-            btn.innerText = "RASTREANDO...";
-            btn.disabled = true;
+            const url = `https://instagram-looter2.p.rapidapi.com/search?query=${user}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6',
+                    'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com'
+                }
+            };
 
             try {
-                // Busca o perfil
-                const response = await fetch(`https://${API_HOST}/search?query=${user}`, {
-                    headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST }
-                });
+                const response = await fetch(url, options);
                 const data = await response.json();
 
                 if (data.users && data.users.length > 0) {
-                    targetData = data.users[0].user;
-                    showConfirmation(targetData);
+                    const perfil = data.users[0].user;
+                    initialLogo.style.display = 'none';
+
+                    // Monta a tela de confirmação exatamente como na imagem solicitada
+                    container.innerHTML = `
+                        <div class="w-full animate-fade-in">
+                            <h2 class="text-2xl font-bold text-center mb-2 text-purple-400">Confirme o Instagram</h2>
+                            <p class="text-center text-gray-300 text-sm mb-8">Você deseja espionar o perfil <span class="font-bold text-white">@${perfil.username}</span>?</p>
+                            
+                            <div class="flex items-center justify-between w-full mb-8 px-2">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(perfil.profile_pic_url)}" 
+                                     class="w-20 h-20 rounded-full border-2 border-purple-500 object-cover shadow-lg">
+                                <div class="flex flex-1 justify-around text-center ml-4">
+                                    <div><p class="font-black text-lg leading-none">${perfil.media_count || '1'}</p><p class="text-[10px] text-gray-500 uppercase">posts</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.follower_count || '2.522'}</p><p class="text-[10px] text-gray-500 uppercase">seguidores</p></div>
+                                    <div><p class="font-black text-lg leading-none">${perfil.following_count || '2.385'}</p><p class="text-[10px] text-gray-500 uppercase">seguindo</p></div>
+                                </div>
+                            </div>
+
+                            <div class="w-full text-xs text-gray-300 bg-white/5 p-4 rounded-2xl mb-8 leading-relaxed border border-white/5">
+                                ${perfil.biography || "Transformo ideias em produtos lucrativos 💡<br>Persistência e Constância definem o seu sucesso."}
+                            </div>
+
+                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3">
+                                <span class="text-red-500 text-lg">⚠️</span>
+                                <p class="text-[11px] text-red-400 leading-tight"><b>Aviso:</b> Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</p>
+                            </div>
+
+                            <div class="flex w-full gap-3">
+                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5">Corrigir @</button>
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
+                                    Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('finalConfirm').addEventListener('click', () => {
+                        // Coloque aqui o link do seu checkout
+                        window.location.href = "https://SEU_CHECKOUT_AQUI.com";
+                    });
+
                 } else {
-                    throw new Error();
+                    alert("Perfil não encontrado. Tente novamente.");
+                    searchBtn.innerText = "ESPIONAR AGORA";
+                    searchBtn.disabled = false;
                 }
-            } catch (e) {
-                alert("Perfil não encontrado.");
-                btn.innerText = "ESPIONAR AGORA";
-                btn.disabled = false;
+            } catch (error) {
+                console.error(error);
+                alert("Erro ao conectar com a API.");
+                searchBtn.innerText = "ESPIONAR AGORA";
+                searchBtn.disabled = false;
             }
         });
-
-        function showConfirmation(perfil) {
-            const profileImg = `https://images.weserv.nl/?url=${encodeURIComponent(perfil.profile_pic_url)}`;
-            document.getElementById('initialLogo').style.display = 'none';
-            document.getElementById('contentArea').innerHTML = `
-                <div class="w-full text-left">
-                    <h2 class="text-xl font-bold text-center mb-6 text-purple-400">Perfil Localizado</h2>
-                    <div class="flex items-center gap-4 mb-6 bg-white/5 p-4 rounded-3xl border border-white/10">
-                        <img src="${profileImg}" class="w-16 h-16 rounded-full border-2 border-purple-500 object-cover">
-                        <div>
-                            <p class="font-bold text-white">@${perfil.username}</p>
-                            <p class="text-xs text-gray-400">Conta verificada via satélite</p>
-                        </div>
-                    </div>
-                    <button id="finalConfirm" class="w-full h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold shadow-lg hover:brightness-110 active:scale-95 transition-all">
-                        CONFIRMAR E ACESSAR FEED
-                    </button>
-                    <button onclick="window.location.reload()" class="w-full mt-4 text-xs text-gray-500 underline text-center block">Não é essa pessoa?</button>
-                </div>
-            `;
-
-            document.getElementById('finalConfirm').addEventListener('click', () => loadInstagramFeed(perfil));
-        }
-
-        async function loadInstagramFeed(perfil) {
-            // Esconde tela de busca, mostra tela do Instagram
-            document.getElementById('mainContainer').classList.add('hidden');
-            document.getElementById('instaInterface').classList.remove('hidden');
-
-            // Preenche dados do cabeçalho
-            document.getElementById('insta-pfp').src = `https://images.weserv.nl/?url=${encodeURIComponent(perfil.profile_pic_url)}`;
-            document.getElementById('insta-name').innerText = perfil.full_name || perfil.username;
-            document.getElementById('insta-bio').innerText = perfil.biography || "No bio available.";
-            document.getElementById('insta-posts').innerText = perfil.media_count || "0";
-            document.getElementById('insta-followers').innerText = perfil.follower_count || "0";
-            document.getElementById('insta-following').innerText = perfil.following_count || "0";
-
-            // Busca as fotos reais via API de feeds
-            try {
-                const response = await fetch(`https://${API_HOST}/user-feeds2?id=${perfil.pk}&count=12`, {
-                    headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST }
-                });
-                const feed = await response.json();
-                
-                const grid = document.getElementById('insta-feed');
-                grid.innerHTML = '';
-
-                if (feed.items) {
-                    feed.items.forEach(item => {
-                        const imgUrl = item.image_versions2?.candidates[0]?.url || item.carousel_media?.[0]?.image_versions2?.candidates[0]?.url;
-                        if(imgUrl) {
-                            const div = document.createElement('div');
-                            div.className = "insta-grid-item";
-                            div.innerHTML = `<img src="https://images.weserv.nl/?url=${encodeURIComponent(imgUrl)}" loading="lazy">`;
-                            grid.appendChild(div);
-                        }
-                    });
-                }
-            } catch (e) {
-                console.error("Erro ao carregar feed.");
-            }
-        }
     </script>
 </body>
 </html>
