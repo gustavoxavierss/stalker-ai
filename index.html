@@ -34,7 +34,7 @@
         }
         @keyframes shine { to { background-position: 200% center; } }
         .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; }
-        .blur-extreme { filter: blur(20px); opacity: 0.4; }
+        .blur-extreme { filter: blur(25px); opacity: 0.4; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
     </style>
 </head>
@@ -107,7 +107,10 @@
                             <div class="w-full text-sm text-gray-200 bg-white/5 p-5 rounded-3xl mb-8 border border-white/5 bio-style">
                                 ${userData.biography || "Perfil identificado com sucesso."}
                             </div>
-                            <button id="finalConfirm" class="w-full h-16 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-sm uppercase italic tracking-tighter">Confirmar ➔</button>
+                            <div class="flex w-full gap-3">
+                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm">Corrigir @</button>
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-sm uppercase italic tracking-tighter shadow-lg">Confirmar ➔</button>
+                            </div>
                         </div>
                     `;
                     document.getElementById('finalConfirm').addEventListener('click', startSimulation);
@@ -143,7 +146,7 @@
                     <div class="bg-[#121212] p-6 rounded-[32px] border border-white/5 mb-8">
                         <div class="flex items-center gap-4 mb-4">
                             <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-14 h-14 rounded-full border-2 border-purple-500 object-cover shadow-xl">
-                            <h3 class="font-black text-sm italic">${userData.full_name || userData.username}</h3>
+                            <h3 class="font-black text-sm italic tracking-tight text-left">${userData.full_name || userData.username}</h3>
                         </div>
                         <div class="flex justify-between text-center px-4 py-3 border-t border-white/5">
                             <div><p class="font-black text-sm">${formatInstagram(userData.media_count)}</p><p class="text-[8px] text-gray-500 uppercase font-bold">posts</p></div>
@@ -159,21 +162,22 @@
                         </p>
                     </div>
 
-                    <div class="mb-12 text-center">
+                    <div class="mb-12 text-center flex flex-col items-center">
                         <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📷 Mídias e fotos privadas (Explícito)</h4>
-                        <div class="grid grid-cols-3 gap-2">
-                            ${[1,2,3,4,5,6].map(i => `<div class="relative aspect-square rounded-xl overflow-hidden bg-zinc-900"><img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40"><div class="absolute inset-0 flex items-center justify-center text-white/40 text-lg">🔒</div></div>`).join('')}
+                        <div class="relative w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5">
+                            <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
+                            <div class="absolute inset-0 flex items-center justify-center text-white/40 text-4xl">🔒</div>
                         </div>
                     </div>
 
                     <div class="mb-12 text-center">
                         <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📍 Localização em tempo real</h4>
-                        <div class="relative w-full h-44 rounded-[32px] overflow-hidden border border-white/5 bg-zinc-900">
-                            <img src="https://ibb.co/gMvJHcyP" class="w-full h-full object-cover opacity-20 blur-[1px]">
+                        <div class="relative w-full h-44 rounded-[32px] overflow-hidden border border-white/5 bg-zinc-900 shadow-xl">
+                            <img src="https://i.ibb.co/L5Z5v5z/map-bg.png" class="w-full h-full object-cover opacity-20 blur-[1px]">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="relative">
-                                    <div class="absolute -inset-3 bg-purple-500 rounded-full animate-ping opacity-30"></div>
-                                    <img src="https://ibb.co/gMvJHcyP" class="relative w-14 h-14 rounded-full border-4 border-white shadow-2xl object-cover">
+                                    <div class="absolute -inset-4 bg-purple-500 rounded-full animate-ping opacity-30"></div>
+                                    <img src="https://i.ibb.co/gMvJHcyP/map-marker.png" class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl object-cover">
                                 </div>
                             </div>
                         </div>
@@ -192,7 +196,7 @@
                         <div class="bg-zinc-900/50 rounded-[32px] p-6 border border-white/5 relative overflow-hidden">
                             <div class="flex items-start gap-3 mb-4 opacity-40 blur-[5px]">
                                 <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-8 h-8 rounded-full border border-purple-500">
-                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight text-gray-300">"Quero te ver agora... como fazemos?"</div>
+                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight text-gray-300">"Amanhã estarei livre... quer me ver?"</div>
                             </div>
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[10px] shadow-2xl uppercase italic tracking-widest">🔒 Revelar Direct</div>
@@ -202,7 +206,7 @@
 
                     <div class="p-8 bg-gradient-to-b from-purple-600/30 to-black border border-purple-500/40 rounded-[48px] text-center shadow-[0_0_60px_rgba(168,85,247,0.2)] mb-20">
                         <p class="text-[9px] text-gray-500 line-through font-black mb-1 uppercase tracking-widest italic opacity-50">De R$ 197,00 por apenas</p>
-                        <div class="flex items-start justify-center gap-1 mb-8 italic">
+                        <div class="flex items-start justify-center gap-1 mb-8 italic text-white">
                             <span class="text-2xl font-black mt-2">R$</span>
                             <span class="text-7xl font-black tracking-tighter">27,00</span>
                         </div>
@@ -210,6 +214,7 @@
                             class="w-full h-20 rounded-3xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-widest shadow-2xl shadow-purple-500/40 hover:scale-[1.03] transition-transform">
                             Liberar Acesso Agora
                         </button>
+                        <p class="mt-6 text-[9px] text-gray-600 font-black uppercase tracking-widest italic opacity-70">Acesso enviado imediatamente via e-mail</p>
                     </div>
                 </div>
             `;
