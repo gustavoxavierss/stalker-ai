@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; }
         .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
         .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
         @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
@@ -34,6 +34,8 @@
         }
         @keyframes shine { to { background-position: 200% center; } }
         .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; }
+        
+        /* Estilos do Funil de Resultados */
         .blur-extreme { filter: blur(20px); opacity: 0.4; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
     </style>
@@ -107,7 +109,14 @@
                             <div class="w-full text-sm text-gray-200 bg-white/5 p-5 rounded-3xl mb-8 border border-white/5 bio-style">
                                 ${userData.biography || "Perfil identificado com sucesso."}
                             </div>
-                            <button id="finalConfirm" class="w-full h-16 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-sm uppercase italic tracking-tighter">Confirmar ➔</button>
+                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3 text-left">
+                                <span class="text-red-500">⚠️</span>
+                                <p class="text-[11px] text-red-400 leading-tight"><b>Aviso:</b> Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</p>
+                            </div>
+                            <div class="flex w-full gap-3">
+                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm">Corrigir @</button>
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-sm uppercase italic tracking-tighter">Confirmar ➔</button>
+                            </div>
                         </div>
                     `;
                     document.getElementById('finalConfirm').addEventListener('click', startSimulation);
@@ -135,7 +144,7 @@
             wrapper.className = "bg-[#0a0a0a] min-h-screen py-10 flex flex-col items-center";
             wrapper.innerHTML = `
                 <div class="w-full max-w-[500px] animate-fade-in px-4">
-                    <div class="flex flex-col items-center py-6 border-b border-white/5 mb-8 text-center">
+                    <div class="flex flex-col items-center py-6 border-b border-white/5 mb-8">
                         <img src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png" class="w-12 mb-2 opacity-80">
                         <h2 class="text-[9px] font-black tracking-[0.2em] text-gray-500 uppercase italic">A maior ferramenta de Stalker do Brasil</h2>
                     </div>
@@ -162,7 +171,7 @@
                     <div class="mb-12 text-center">
                         <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📷 Mídias e fotos privadas (Explícito)</h4>
                         <div class="grid grid-cols-3 gap-2">
-                            ${[1,2,3,4,5,6].map(i => `<div class="relative aspect-square rounded-xl overflow-hidden bg-zinc-900"><img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40"><div class="absolute inset-0 flex items-center justify-center text-white/40 text-lg">🔒</div></div>`).join('')}
+                            ${[1,2,3,4,5,6].map(i => `<div class="relative aspect-square rounded-xl overflow-hidden bg-zinc-900"><img src="https://picsum.photos/400/400?sig=${i+30}" class="w-full h-full object-cover blur-extreme grayscale opacity-40"><div class="absolute inset-0 flex items-center justify-center text-white/40 text-lg">🔒</div></div>`).join('')}
                         </div>
                     </div>
 
@@ -173,7 +182,7 @@
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="relative">
                                     <div class="absolute -inset-3 bg-purple-500 rounded-full animate-ping opacity-30"></div>
-                                    <img src="https://i.ibb.co/CpmGVsBz/86fbada39188c9581d54de368159d4d0.png" class="relative w-14 h-14 rounded-full border-4 border-white shadow-2xl object-cover">
+                                    <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="relative w-14 h-14 rounded-full border-4 border-white shadow-2xl">
                                 </div>
                             </div>
                         </div>
@@ -192,7 +201,7 @@
                         <div class="bg-zinc-900/50 rounded-[32px] p-6 border border-white/5 relative overflow-hidden">
                             <div class="flex items-start gap-3 mb-4 opacity-40 blur-[5px]">
                                 <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-8 h-8 rounded-full border border-purple-500">
-                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight text-gray-300">"Quero te ver agora... como fazemos?"</div>
+                                <div class="bg-zinc-800 p-4 rounded-2xl rounded-tl-none text-[11px] text-left italic tracking-tight">"Amanhã estarei livre... quer me ver?"</div>
                             </div>
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[10px] shadow-2xl uppercase italic tracking-widest">🔒 Revelar Direct</div>
@@ -210,6 +219,7 @@
                             class="w-full h-20 rounded-3xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-widest shadow-2xl shadow-purple-500/40 hover:scale-[1.03] transition-transform">
                             Liberar Acesso Agora
                         </button>
+                        <p class="mt-6 text-[9px] text-gray-600 font-black uppercase tracking-widest italic opacity-70">Acesso enviado imediatamente via e-mail</p>
                     </div>
                 </div>
             `;
