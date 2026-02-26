@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
         .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
         .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
         @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
@@ -33,24 +33,23 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; }
         
-        /* Estilos do Funil de Simulação e Vendas */
-        .blur-content { filter: blur(10px); pointer-events: none; user-select: none; }
-        .lock-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border-radius: 12px; font-size: 24px; }
-        .progress-bar { height: 8px; background: #1a1a1a; border-radius: 4px; overflow: hidden; width: 100%; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
+        /* Estilos da Interface do Instagram */
+        .iphone-frame { width: 100%; max-width: 430px; min-height: 100vh; background: #000; position: relative; margin: 0 auto; }
+        .blur-extreme { filter: blur(20px); opacity: 0.6; }
+        .blur-text { filter: blur(5px); user-select: none; }
+        .story-ring { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); padding: 2px; border-radius: 50%; }
+        .story-ring-cf { background: #4fce5d; padding: 2px; border-radius: 50%; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
+        .btn-pay { background: linear-gradient(to right, #6B59D8, #9D4EDD); box-shadow: 0 0 25px rgba(107, 89, 216, 0.4); }
     </style>
 </head>
 <body>
-    <div class="min-h-screen relative flex flex-col items-center justify-center px-4 py-10">
+    <div id="wrapper" class="min-h-screen relative flex flex-col items-center justify-center px-4 py-8">
         <div class="matrix-bg matrix-bg-1"></div>
 
         <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
-            
             <div id="initialLogo" class="mb-4">
                 <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
             </div>
@@ -59,36 +58,27 @@
                 <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
                     Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
                 </h1>
-
-                <p class="text-gray-400 text-center text-sm mb-6 uppercase tracking-widest font-bold">Digite o usuário sem o "@"</p>
-
-                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
-                    class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
-
+                <p class="text-gray-400 text-center text-sm mb-6">Digite o nome de usuário sem o "@"</p>
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" class="w-full mb-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
                 <button id="searchBtn" class="w-full h-[65px] rounded-full font-black text-[20px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.02] active:scale-[0.95] transition-all shadow-lg">
                     ESPIONAR AGORA
                 </button>
             </div>
         </div>
 
-        <div id="footerText" class="mt-8 text-center opacity-60">
-            <p id="counterDisplay" class="text-[#a855f7] font-black text-sm tracking-tight">+81.595 perfis analisados hoje</p>
+        <div id="footerText" class="mt-8 text-center opacity-60 relative z-10">
+            <p class="text-[#a855f7] font-black text-sm tracking-tight">+81.595 perfis analisados hoje</p>
         </div>
     </div>
 
     <script>
-        let userData = {}; // Armazena dados globais do perfil pesquisado
+        let userData = {};
         const searchBtn = document.getElementById('searchBtn');
         const input = document.getElementById('usernameInput');
         const container = document.getElementById('contentArea');
         const initialLogo = document.getElementById('initialLogo');
         const mainContainer = document.getElementById('mainContainer');
-
-        const formatInstagram = (num) => {
-            if (!num && num !== 0) return '0';
-            if (num >= 1000000) return (num / 1000000).toFixed(0) + 'mi';
-            return num.toLocaleString('pt-BR');
-        };
+        const wrapper = document.getElementById('wrapper');
 
         searchBtn.addEventListener('click', async () => {
             const user = input.value.trim().replace('@', '');
@@ -97,175 +87,126 @@
             searchBtn.innerText = "LOCALIZANDO...";
             searchBtn.disabled = true;
 
-            const url = `https://instagram-looter2.p.rapidapi.com/profile2?username=${user}`;
-            const options = {
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6',
-                    'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com'
-                }
-            };
-
             try {
-                const response = await fetch(url, options);
+                const response = await fetch(`https://instagram-looter2.p.rapidapi.com/profile2?username=${user}`, {
+                    headers: {
+                        'x-rapidapi-key': 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6',
+                        'x-rapidapi-host': 'instagram-looter2.p.rapidapi.com'
+                    }
+                });
                 userData = await response.json();
 
                 if (userData && userData.username) {
                     initialLogo.style.display = 'none';
-
                     container.innerHTML = `
                         <div class="w-full animate-fade-in">
                             <h2 class="text-2xl font-bold text-center mb-2 text-purple-400">Confirme o Instagram</h2>
-                            <p class="text-center text-gray-300 text-sm mb-8">Você deseja espionar o perfil <span class="font-bold text-white">@${userData.username}</span>?</p>
-                            
+                            <p class="text-center text-gray-300 text-sm mb-8 px-4">Você deseja espionar o perfil <span class="font-bold text-white">@${userData.username}</span>?</p>
                             <div class="flex items-center justify-between w-full mb-8 px-2">
-                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url_hd || userData.profile_pic_url)}" 
-                                     class="w-24 h-24 rounded-full border-2 border-purple-500 object-cover shadow-lg">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-20 h-20 rounded-full border-2 border-purple-500 object-cover shadow-lg">
                                 <div class="flex flex-1 justify-around text-center ml-4">
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.media_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.follower_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.following_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
+                                    <div><p class="font-black text-lg leading-none">${userData.media_count || '0'}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
+                                    <div><p class="font-black text-lg leading-none">${(userData.follower_count >= 1000000) ? (userData.follower_count/1000000).toFixed(0)+'mi' : userData.follower_count.toLocaleString('pt-BR')}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
+                                    <div><p class="font-black text-lg leading-none">${userData.following_count.toLocaleString('pt-BR')}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
                                 </div>
                             </div>
-
-                            <div class="w-full text-sm text-gray-200 bg-white/5 p-5 rounded-3xl mb-8 leading-relaxed border border-white/5">
-                                <div class="bio-style font-medium">${userData.biography || "Perfil identificado com sucesso."}</div>
+                            <div class="w-full text-xs text-gray-300 bg-white/5 p-4 rounded-2xl mb-8 border border-white/5" style="text-align: left; white-space: pre-wrap;">
+                                ${userData.biography || "Perfil identificado com sucesso."}
                             </div>
-
-                            <div class="w-full bg-red-900/10 border border-red-500/20 p-4 rounded-2xl mb-8 flex items-start gap-3 text-left">
-                                <span class="text-red-500 text-lg">⚠️</span>
-                                <p class="text-[11px] text-red-400 leading-tight"><b>Aviso:</b> Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</p>
-                            </div>
-
-                            <div class="flex w-full gap-3">
-                                <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5 transition-all">Corrigir @</button>
-                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
-                                    Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                                </button>
-                            </div>
+                            <button id="finalConfirm" class="w-full h-16 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg shadow-lg uppercase italic tracking-tighter">Confirmar e Acessar ➔</button>
                         </div>
                     `;
-
                     document.getElementById('finalConfirm').addEventListener('click', startSimulation);
-
-                } else {
-                    alert("Perfil não encontrado. Tente novamente.");
-                    searchBtn.innerText = "ESPIONAR AGORA";
-                    searchBtn.disabled = false;
                 }
-            } catch (error) {
-                console.error(error);
-                alert("Erro ao conectar com a API.");
-                searchBtn.innerText = "ESPIONAR AGORA";
-                searchBtn.disabled = false;
-            }
+            } catch (e) { alert("Erro na API."); searchBtn.disabled = false; }
         });
 
         function startSimulation() {
             mainContainer.innerHTML = `
                 <div class="w-full text-center py-10 animate-fade-in">
                     <h2 class="text-2xl font-black mb-6 animate-pulse uppercase italic">Extraindo Dados...</h2>
-                    <div class="progress-bar mb-4"><div id="pFill" class="progress-fill"></div></div>
-                    <p id="pStatus" class="text-purple-400 font-bold text-sm uppercase tracking-tighter italic">Iniciando bypass de segurança...</p>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-4"><div id="pFill" class="progress-fill"></div></div>
+                    <p id="pStatus" class="text-purple-400 font-bold text-[10px] uppercase tracking-widest italic">Iniciando bypass...</p>
                 </div>
             `;
-
-            const statuses = [
-                "Bypass de segurança em andamento...",
-                "Acessando servidores do Instagram...",
-                "Descriptografando mensagens Direct...",
-                "Recuperando mídias apagadas...",
-                "Localizando Stories ocultos...",
-                "Sincronizando banco de dados...",
-                "FINALIZANDO ESPIONAGEM!"
-            ];
-
             let progress = 0;
             const interval = setInterval(() => {
                 progress += Math.random() * 15;
-                if (progress > 100) progress = 100;
-                
+                if (progress >= 100) { clearInterval(interval); showInstagramScreen(); }
                 document.getElementById('pFill').style.width = progress + '%';
-                const statusIdx = Math.floor((progress / 100) * (statuses.length - 1));
-                document.getElementById('pStatus').innerText = statuses[statusIdx];
-
-                if (progress === 100) {
-                    clearInterval(interval);
-                    setTimeout(showSalesPage, 1000);
-                }
-            }, 500);
+            }, 400);
         }
 
-        function showSalesPage() {
-            mainContainer.classList.remove('max-w-[450px]');
-            mainContainer.classList.add('max-w-[650px]');
-            
-            mainContainer.innerHTML = `
-                <div class="w-full animate-fade-in">
-                    <div class="bg-purple-600/20 border border-purple-500/30 p-4 rounded-2xl mb-8 text-center text-purple-300 font-black uppercase tracking-widest italic">
-                        Espionagem Finalizada com Sucesso! 🕵️
-                    </div>
-
-                    <div class="mb-10">
-                        <h3 class="flex items-center gap-2 mb-6 font-black text-gray-200 uppercase text-xs italic tracking-widest opacity-60">🎥 Mídias e Fotos Privadas de @${userData.username}</h3>
-                        <div class="grid grid-cols-3 gap-2">
-                            ${[1,2,3,4,5,6].map(() => `
-                                <div class="relative aspect-square">
-                                    <img src="https://picsum.photos/300/300?random=${Math.random()}" class="blur-content w-full h-full rounded-2xl object-cover grayscale opacity-40">
-                                    <div class="lock-overlay text-white opacity-80">🔒</div>
-                                </div>
-                            `).join('')}
+        function showInstagramScreen() {
+            // Remove o estilo de Glassmorphism e Centralização para virar o App
+            wrapper.className = "bg-black min-h-screen";
+            wrapper.innerHTML = `
+                <div class="iphone-frame flex flex-col animate-fade-in">
+                    <div class="px-4 py-3 flex justify-between items-center border-b border-[#262626]">
+                        <span class="font-black text-xl italic tracking-tighter">INSTAGRAM</span>
+                        <div class="flex gap-5">
+                            <span class="text-xl">📸</span>
+                            <div class="relative"><span class="text-xl">💬</span><div class="absolute -top-1 -right-1 bg-red-500 text-[9px] px-1 rounded-full font-bold">12</div></div>
                         </div>
                     </div>
 
-                    <div class="mb-10 relative">
-                        <h3 class="flex items-center gap-2 mb-6 font-black text-gray-200 uppercase text-xs italic tracking-widest opacity-60">💬 Mensagens e Directs extraídos</h3>
-                        <div class="bg-white/5 p-6 rounded-3xl blur-content space-y-4 border border-white/5">
-                            <div class="flex items-center gap-3"><div class="w-8 h-8 bg-purple-500/20 rounded-full"></div><div class="h-2 bg-white/10 w-3/4 rounded-full"></div></div>
-                            <div class="flex items-center gap-3 justify-end"><div class="h-2 bg-purple-500/40 w-1/2 rounded-full"></div><div class="w-8 h-8 bg-white/10 rounded-full"></div></div>
-                            <div class="flex items-center gap-3"><div class="w-8 h-8 bg-purple-500/20 rounded-full"></div><div class="h-2 bg-white/10 w-2/3 rounded-full"></div></div>
+                    <div class="flex gap-4 px-4 py-4 overflow-x-auto no-scrollbar border-b border-[#262626]">
+                        <div class="flex flex-col items-center min-w-[72px]">
+                            <div class="story-ring-cf w-16 h-16"><img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-full h-full rounded-full border-2 border-black object-cover blur-sm"></div>
+                            <span class="text-[10px] mt-1 font-bold text-green-500 italic">Close Friends</span>
                         </div>
-                        <div class="absolute inset-0 flex items-center justify-center z-20">
-                            <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[12px] shadow-2xl flex items-center gap-2 tracking-widest uppercase italic">🔒 Ver Todas as Conversas</div>
-                        </div>
+                        ${[1,2,3,4].map(i => `<div class="flex flex-col items-center min-w-[72px] opacity-40"><div class="story-ring w-16 h-16"><div class="w-full h-full rounded-full border-2 border-black bg-zinc-900"></div></div><span class="text-[10px] mt-1 text-gray-500">user_${i}...</span></div>`).join('')}
                     </div>
 
-                    <div class="bg-gradient-to-b from-[#6B59D8]/30 to-black border border-[#6B59D8]/40 rounded-[40px] p-8 text-center relative overflow-hidden mb-10 shadow-[0_0_50px_rgba(168,85,247,0.2)]">
-                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-black px-4 py-1 rounded-bl-2xl uppercase italic">Últimas vagas</div>
+                    <div class="flex-1 overflow-y-auto px-4 py-4">
+                        <div class="flex justify-between items-center mb-6"><h2 class="text-sm font-black uppercase tracking-widest text-gray-400 italic">Mensagens Diretas</h2></div>
                         
-                        <p class="text-xs text-gray-400 line-through font-bold">DE R$ 197,00 POR APENAS</p>
-                        <p class="text-6xl font-black mb-8 text-white tracking-tighter italic">R$ 27,00</p>
-                        
-                        <div class="text-left space-y-4 text-xs font-medium mb-10 text-gray-200">
-                            <div class="flex items-center gap-3"><span class="text-purple-400 font-bold">✔</span> <span>Ver mensagens do Direct (Incluindo apagadas)</span></div>
-                            <div class="flex items-center gap-3"><span class="text-purple-400 font-bold">✔</span> <span>Acesso a fotos e vídeos de visualização única</span></div>
-                            <div class="flex items-center gap-3"><span class="text-purple-400 font-bold">✔</span> <span>Localização exata via GPS do dispositivo</span></div>
-                            <div class="flex items-center gap-3"><span class="text-purple-400 font-bold">✔</span> <span>Acesso aos Stories de "Melhores Amigos"</span></div>
+                        <div class="flex items-center gap-4 mb-8 group cursor-pointer" onclick="openPaywall()">
+                            <div class="w-14 h-14 rounded-full bg-purple-900/40 flex items-center justify-center text-xl">🔞</div>
+                            <div class="flex-1 border-b border-[#1a1a1a] pb-4">
+                                <div class="flex justify-between mb-1"><span class="font-bold text-sm tracking-tighter">B**** G**** (D****)</span><span class="text-gray-500 text-[10px]">2min</span></div>
+                                <div class="text-[12px] text-purple-400 font-medium flex items-center gap-1"><span class="blur-text">"Olha essa foto que acabei de tirar..."</span><span class="text-[10px] opacity-70 italic ml-2">📸 Visualização Única</span></div>
+                            </div>
                         </div>
 
-                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" 
-                            class="w-full h-20 rounded-3xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-xl shadow-2xl shadow-purple-500/40 hover:scale-[1.02] transition-transform uppercase italic">
-                            Acessar Tudo Agora
-                        </button>
-                        <p class="mt-4 text-[10px] text-gray-500 font-bold tracking-widest uppercase italic">Acesso Imediato • Garantia de 7 Dias</p>
+                        <div class="flex items-center gap-4 mb-8 opacity-90" onclick="openPaywall()">
+                            <div class="w-14 h-14 rounded-full bg-white/5 overflow-hidden"><img src="https://i.pravatar.cc/150?u=target" class="w-full h-full object-cover blur-md"></div>
+                            <div class="flex-1 border-b border-[#1a1a1a] pb-4">
+                                <div class="flex justify-between mb-1"><span class="font-bold text-sm tracking-tighter">L**** M****</span><span class="text-gray-500 text-[10px]">1h</span></div>
+                                <div class="text-[12px] text-red-500/80 font-bold flex items-center gap-1"><span class="blur-text">"Quero você agora, vem ver..."</span><span class="text-[10px] ml-2">🎥 Vídeo</span></div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic">Arquivos de Mídia Ocultos</h3>
+                            <div class="grid grid-cols-3 gap-2">
+                                ${[1,2,3].map(i => `<div class="relative aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden" onclick="openPaywall()"><img src="https://picsum.photos/400/600?sig=${i}" class="w-full h-full object-cover blur-extreme grayscale opacity-40"><div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20"><span class="text-2xl mb-1">🔒</span><span class="text-[9px] font-black text-white uppercase tracking-tighter italic">VER +18</span></div></div>`).join('')}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="w-full space-y-4">
-                        <h3 class="text-center font-black text-gray-500 text-[10px] tracking-widest uppercase mb-6 italic opacity-60 italic">Perguntas Frequentes</h3>
-                        <div class="space-y-2">
-                            <details class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                                <summary class="font-bold text-xs cursor-pointer flex justify-between items-center text-gray-300">A pessoa saberá que espionei o perfil? <span class="text-purple-500 text-lg">+</span></summary>
-                                <p class="text-[11px] text-gray-500 mt-4 leading-relaxed">Não. O acesso é feito via token criptografado diretamente no servidor do Instagram, garantindo que o seu acesso seja 100% indetectável e anônimo.</p>
-                            </details>
-                            <details class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                                <summary class="font-bold text-xs cursor-pointer flex justify-between items-center text-gray-300">Como receberei os dados extraídos? <span class="text-purple-500 text-lg">+</span></summary>
-                                <p class="text-[11px] text-gray-500 mt-4 leading-relaxed">Após a confirmação do pagamento, você receberá instantaneamente em seu e-mail o link para o seu Painel de Controle VIP com todos os dados liberados.</p>
-                            </details>
+                    <div class="p-6 bg-gradient-to-t from-black to-transparent sticky bottom-0">
+                        <button onclick="openPaywall()" class="w-full h-16 btn-pay rounded-2xl font-black text-sm uppercase italic tracking-widest animate-pulse">Desbloquear Histórico Completo 🔓</button>
+                    </div>
+                </div>
+
+                <div id="paywall" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col items-center justify-center p-6 text-center">
+                    <div class="w-full max-w-[380px] p-8 border-2 border-purple-600 rounded-[40px] bg-zinc-900/50">
+                        <span class="text-5xl block mb-6">🔒</span>
+                        <h2 class="text-2xl font-black italic mb-4 uppercase">Acesso Restrito</h2>
+                        <p class="text-gray-400 text-sm mb-8 leading-relaxed italic">Localizamos <span class="text-white font-bold">conversas picantes</span> e <span class="text-white font-bold">mídias ocultas</span>. Pague uma taxa única para liberar.</p>
+                        <div class="bg-black/40 rounded-3xl p-6 mb-8 border border-white/5">
+                            <p class="text-xs text-gray-500 line-through font-bold">DE R$ 197,00 POR</p>
+                            <p class="text-5xl font-black italic tracking-tighter">R$ 27,00</p>
                         </div>
+                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" class="w-full h-20 btn-pay rounded-3xl font-black text-lg uppercase italic tracking-widest">Liberar Acesso Agora</button>
+                        <p class="mt-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">Acesso Vitalício • Garantia de 7 Dias</p>
                     </div>
                 </div>
             `;
         }
+
+        function openPaywall() { document.getElementById('paywall').classList.remove('hidden'); document.getElementById('paywall').classList.add('flex'); }
     </script>
 </body>
 </html>
