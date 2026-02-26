@@ -3,55 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stalkea AI - Monitoramento Oficial</title>
+    <title>Stalkea AI - Monitoramento</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; margin: 0; overflow-x: hidden; }
+        body { background-color: #050505; color: white; margin: 0; font-family: sans-serif; }
+        #root { min-height: 100vh; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .insta-gradient { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
-        .story-ring { padding: 2px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border-radius: 50%; }
-        .cf-ring { padding: 2px; background: #00E05A; border-radius: 50%; }
+        .scanner-line { height: 2px; background: #a855f7; position: absolute; width: 100%; animation: scan 2s linear infinite; box-shadow: 0 0 15px #a855f7; }
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-        .scanner-line { height: 2px; background: #a855f7; position: absolute; width: 100%; animation: scan 2s linear infinite; box-shadow: 0 0 15px #a855f7; z-index: 20; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="width: 40px; height: 40px; border: 3px solid #a855f7; border-top-color: transparent; border-radius: 50%; animate: spin 1s linear infinite;"></div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        // Este bloco script será processado pelo navegador
+    </script>
 
     <script>
         const { useState, useEffect } = React;
 
-        // Configuração da API que você enviou
         const API_CONFIG = {
             host: 'instagram-looter2.p.rapidapi.com',
             key: 'e3cd2d0d2fmsh0dced0acd30a539p1c7338jsn42c4ecbbcca6'
         };
 
         const App = () => {
-            const [step, setStep] = useState('search'); // search, confirming, hacking, dashboard
+            const [step, setStep] = useState('search');
             const [username, setUsername] = useState('');
             const [targetData, setTargetData] = useState(null);
             const [posts, setPosts] = useState([]);
             const [loading, setLoading] = useState(false);
 
-            // Função para buscar dados da API
+            // Inicializa ícones sempre que o step muda
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [step]);
+
             const fetchInstagramData = async (user) => {
+                if (!user) return;
                 setLoading(true);
                 try {
-                    // 1. Pegar ID e Perfil
-                    const profileRes = await fetch(`https://${API_CONFIG.host}/web-profile?username=${user}`, {
+                    const profileRes = await fetch(`https://${API_CONFIG.host}/web-profile?username=${user.toLowerCase()}`, {
                         headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
                     });
                     const data = await profileRes.json();
+                    
+                    if (!data || !data.id) throw new Error("User not found");
+                    
                     setTargetData(data);
 
-                    // 2. Pegar Feed (Posts)
                     const feedRes = await fetch(`https://${API_CONFIG.host}/user-feeds2?id=${data.id}&count=12`, {
                         headers: { 'x-rapidapi-host': API_CONFIG.host, 'x-rapidapi-key': API_CONFIG.key }
                     });
@@ -60,195 +73,121 @@
 
                     setStep('confirming');
                 } catch (err) {
-                    alert("Erro ao buscar usuário. Verifique o nome e tente novamente.");
+                    alert("Usuário não encontrado ou erro na API.");
                 } finally {
                     setLoading(false);
                 }
             };
 
-            // Componente de Busca (Estilo Stalkea)
-            const SearchScreen = () => (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                    <img src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png" className="w-48 mb-8" />
-                    <h1 className="text-3xl font-black mb-4">Descubra a verdade em <span className="text-purple-500">segundos.</span></h1>
+            // TELA 1: BUSCA
+            if (step === 'search') return (
+                <div className="flex flex-col items-center justify-center p-6 text-center min-h-screen">
+                    <h1 className="text-4xl font-black mb-2 italic">STALKEA <span className="text-purple-500">AI</span></h1>
+                    <p className="text-gray-400 mb-8">O monitor de perfis mais avançado do mundo.</p>
                     <div className="w-full max-w-sm glass p-6 rounded-[30px]">
                         <input 
                             type="text" 
-                            placeholder="Nome de usuário..." 
-                            className="w-full bg-white/5 border border-white/10 p-4 rounded-full mb-4 text-center font-bold"
+                            placeholder="@usuario_alvo" 
+                            className="w-full bg-white/5 border border-white/10 p-4 rounded-full mb-4 text-center font-bold text-white outline-none focus:border-purple-500"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value.replace('@',''))}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <button 
                             onClick={() => fetchInstagramData(username)}
-                            disabled={loading}
-                            className="w-full py-4 rounded-full bg-purple-600 font-bold uppercase tracking-widest hover:bg-purple-500 transition-all"
+                            className="w-full py-4 rounded-full bg-purple-600 font-bold uppercase hover:bg-purple-500 transition-all"
                         >
-                            {loading ? 'Buscando...' : 'Espionar Agora'}
+                            {loading ? 'Rastreando...' : 'Hackear Agora'}
                         </button>
                     </div>
                 </div>
             );
 
-            // Componente de Confirmação
-            const ConfirmScreen = () => (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-fade-in">
-                    <div className="w-full max-w-sm glass p-8 rounded-[40px] text-center">
-                        <div className="story-ring w-24 h-24 mx-auto mb-4">
-                            <img src={targetData.profile_pic_url} className="w-full h-full rounded-full object-cover border-2 border-black" />
-                        </div>
+            // TELA 2: CONFIRMAÇÃO
+            if (step === 'confirming') return (
+                <div className="flex flex-col items-center justify-center p-6 min-h-screen">
+                    <div className="w-full max-w-sm glass p-8 rounded-[40px] text-center border-purple-500/30">
+                        <img src={targetData.profile_pic_url} className="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-purple-500 p-1" />
                         <h2 className="text-2xl font-bold">@{targetData.username}</h2>
-                        <p className="text-gray-400 mb-6">{targetData.full_name}</p>
-                        <div className="flex justify-around mb-8 border-y border-white/10 py-4">
-                            <div><p className="font-bold">{targetData.edge_owner_to_timeline_media.count}</p><p className="text-xs text-gray-500 uppercase">Posts</p></div>
-                            <div><p className="font-bold">{targetData.edge_followed_by.count}</p><p className="text-xs text-gray-500 uppercase">Seguidores</p></div>
+                        <div className="flex justify-around my-6 border-y border-white/10 py-4 text-sm">
+                            <div><p className="font-bold">{targetData.edge_followed_by?.count || '0'}</p><p className="text-gray-500">Seguidores</p></div>
+                            <div><p className="font-bold">{targetData.edge_follow?.count || '0'}</p><p className="text-gray-500">Seguindo</p></div>
                         </div>
-                        <button 
-                            onClick={() => setStep('hacking')}
-                            className="w-full py-4 rounded-xl bg-purple-600 font-bold"
-                        >
-                            Confirmar Alvo
-                        </button>
+                        <button onClick={() => setStep('hacking')} className="w-full py-4 rounded-xl bg-purple-600 font-bold">Este é o alvo</button>
                     </div>
                 </div>
             );
 
-            // Simulação de "Hacking"
-            const HackingScreen = () => {
-                const [progress, setProgress] = useState(0);
-                useEffect(() => {
-                    const int = setInterval(() => {
-                        setProgress(prev => {
-                            if(prev >= 100) { clearInterval(int); setTimeout(() => setStep('dashboard'), 500); return 100; }
-                            return prev + 1;
-                        });
-                    }, 50);
-                    return () => clearInterval(int);
-                }, []);
+            // TELA 3: HACKING
+            if (step === 'hacking') return <HackingAnimation onComplete={() => setStep('dashboard')} />;
 
-                return (
-                    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8 font-mono">
-                        <div className="w-full max-w-md relative">
-                            <div className="scanner-line"></div>
-                            <div className="glass p-6 rounded-lg border-purple-500/50">
-                                <p className="text-purple-500 mb-2">>> INICIANDO BYPASS PROTOCOL V6.1</p>
-                                <p className="text-xs text-gray-500 mb-4">Quebrando criptografia de ponta a ponta...</p>
-                                <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-purple-600 h-full transition-all" style={{width: `${progress}%`}}></div>
-                                </div>
-                                <p className="text-right mt-2 text-purple-500">{progress}%</p>
-                                <div className="mt-4 space-y-1">
-                                    <p className={`text-[10px] ${progress > 20 ? 'text-green-500' : 'text-gray-700'}`}>✓ Proxy connection established</p>
-                                    <p className={`text-[10px] ${progress > 50 ? 'text-green-500' : 'text-gray-700'}`}>✓ Data packets intercepted</p>
-                                    <p className={`text-[10px] ${progress > 80 ? 'text-green-500' : 'text-gray-700'}`}>✓ Decrypting Direct Messages</p>
-                                </div>
+            // TELA 4: DASHBOARD (INSTAGRAM SIMULADO)
+            if (step === 'dashboard') return (
+                <div className="max-w-md mx-auto min-h-screen bg-black relative pb-20">
+                    <header className="p-4 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black z-50">
+                        <span className="font-bold text-xl italic">Instagram AI</span>
+                        <div className="flex gap-4"><i data-lucide="heart"></i><i data-lucide="message-circle"></i></div>
+                    </header>
+                    
+                    {/* Stories */}
+                    <div className="flex p-4 gap-4 overflow-x-auto no-scrollbar border-b border-white/10">
+                        <div className="flex flex-col items-center gap-1 shrink-0">
+                            <div className="w-16 h-16 rounded-full border-2 border-green-500 p-1">
+                                <img src={targetData.profile_pic_url} className="w-full h-full rounded-full object-cover" />
                             </div>
+                            <span className="text-[10px] text-green-500">Amigos Próximos</span>
                         </div>
                     </div>
-                );
-            };
 
-            // Dashboard do Instagram Simulado
-            const Dashboard = () => {
-                const [view, setView] = useState('feed'); // feed, chat
-
-                return (
-                    <div className="min-h-screen bg-black pb-20 max-w-md mx-auto border-x border-white/10 shadow-2xl">
-                        {/* Header */}
-                        <div className="sticky top-0 z-50 bg-black border-b border-white/10 p-4 flex justify-between items-center">
-                            <h2 className="text-xl font-bold italic tracking-tighter">Instagram Restricted</h2>
-                            <div className="flex gap-4">
-                                <button onClick={() => setView('feed')}><i data-lucide="heart" className="w-6"></i></button>
-                                <button onClick={() => setView('chat')} className="relative">
-                                    <i data-lucide="message-circle" className="w-6"></i>
-                                    <span className="absolute -top-2 -right-2 bg-red-500 text-[10px] px-1 rounded-full">3</span>
-                                </button>
+                    {/* Feed Reais */}
+                    <div className="space-y-6">
+                        {posts.length > 0 ? posts.map((p, i) => (
+                            <div key={i}>
+                                <div className="p-3 flex items-center gap-2">
+                                    <img src={targetData.profile_pic_url} className="w-8 h-8 rounded-full" />
+                                    <span className="font-bold text-sm">{targetData.username}</span>
+                                </div>
+                                <img src={p.image_versions2?.candidates?.[0]?.url} className="w-full" />
                             </div>
-                        </div>
-
-                        {view === 'feed' ? (
-                            <>
-                                {/* Stories Tray */}
-                                <div className="flex overflow-x-auto p-4 gap-4 no-scrollbar border-b border-white/10">
-                                    <div className="flex flex-col items-center gap-1 shrink-0">
-                                        <div className="cf-ring w-16 h-16"><img src={targetData.profile_pic_url} className="w-full h-full rounded-full border-2 border-black" /></div>
-                                        <span className="text-[10px] text-green-500">Close Friends</span>
-                                    </div>
-                                    {/* Mock Stories de seguidores */}
-                                    {[1,2,3,4,5].map(i => (
-                                        <div key={i} className="flex flex-col items-center gap-1 shrink-0">
-                                            <div className="story-ring w-16 h-16 p-[2px] bg-gradient-to-tr from-yellow-400 to-fuchsia-600 rounded-full">
-                                                <img src={`https://i.pravatar.cc/150?u=${i}`} className="w-full h-full rounded-full border-2 border-black" />
-                                            </div>
-                                            <span className="text-[10px] text-gray-400">user_{i}</span>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Feed de Imagens Reais da API */}
-                                <div className="space-y-4">
-                                    {posts.map((post, idx) => (
-                                        <div key={idx} className="border-b border-white/5 pb-4">
-                                            <div className="p-3 flex items-center gap-2">
-                                                <img src={targetData.profile_pic_url} className="w-8 h-8 rounded-full" />
-                                                <span className="font-bold text-sm">{targetData.username}</span>
-                                            </div>
-                                            <img src={post.image_versions2?.candidates?.[0]?.url || 'https://via.placeholder.com/400'} className="w-full aspect-square object-cover" />
-                                            <div className="p-3 flex gap-4"><i data-lucide="heart"></i><i data-lucide="message-circle"></i><i data-lucide="send"></i></div>
-                                            <div className="px-3 text-xs text-gray-500">Curtido por milhares de pessoas</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </>
-                        ) : (
-                            /* Seção de Conversas Projetadas */
-                            <div className="animate-fade-in">
-                                <div className="p-4 border-b border-white/10 flex items-center gap-4">
-                                    <i data-lucide="arrow-left" onClick={() => setView('feed')}></i>
-                                    <span className="font-bold">Mensagens Diretas</span>
-                                </div>
-                                <div className="divide-y divide-white/5">
-                                    {[
-                                        {name: 'Amante Secret@', msg: 'Aonde você está?', time: '2m', color: 'text-red-400'},
-                                        {name: 'Ex-Contato', msg: 'Por que não me responde mais?', time: '15m'},
-                                        {name: 'Trabalho', msg: 'Preciso daquele arquivo urgente.', time: '1h'},
-                                    ].map((chat, i) => (
-                                        <div key={i} className="p-4 flex gap-4 items-center active:bg-white/5 cursor-pointer">
-                                            <img src={`https://i.pravatar.cc/150?u=${i+10}`} className="w-14 h-14 rounded-full" />
-                                            <div className="flex-1">
-                                                <div className="flex justify-between"><span className={`font-bold ${chat.color}`}>{chat.name}</span><span className="text-xs text-gray-500">{chat.time}</span></div>
-                                                <p className="text-sm text-gray-400 truncate">{chat.msg}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Bottom Nav */}
-                        <div className="fixed bottom-0 max-w-md w-full bg-black border-t border-white/10 flex justify-around p-4 z-50">
-                            <i data-lucide="home" onClick={() => setView('feed')}></i>
-                            <i data-lucide="search"></i>
-                            <i data-lucide="plus-square"></i>
-                            <i data-lucide="clapperboard"></i>
-                            <img src={targetData.profile_pic_url} className="w-6 h-6 rounded-full border border-white/50" />
-                        </div>
+                        )) : <p className="text-center p-10 text-gray-500">Nenhuma mídia encontrada.</p>}
                     </div>
-                );
-            };
 
-            // Efeito para rodar ícones do Lucide
-            useEffect(() => { if(window.lucide) window.lucide.createIcons(); }, [step, targetData]);
-
-            // Router simples
-            if (step === 'search') return <SearchScreen />;
-            if (step === 'confirming') return <ConfirmScreen />;
-            if (step === 'hacking') return <HackingScreen />;
-            if (step === 'dashboard') return <Dashboard />;
+                    <nav className="fixed bottom-0 max-w-md w-full bg-black border-t border-white/10 flex justify-around p-4">
+                        <i data-lucide="home"></i><i data-lucide="search"></i><i data-lucide="play"></i><i data-lucide="user"></i>
+                    </nav>
+                </div>
+            );
         };
 
+        const HackingAnimation = ({ onComplete }) => {
+            const [progress, setProgress] = useState(0);
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setProgress(p => {
+                        if (p >= 100) { clearInterval(interval); setTimeout(onComplete, 1000); return 100; }
+                        return p + 1;
+                    });
+                }, 40);
+                return () => clearInterval(interval);
+            }, []);
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-8">
+                    <div className="w-full max-w-xs relative">
+                        <div className="scanner-line"></div>
+                        <div className="glass p-6 rounded-xl border-purple-500/50">
+                            <p className="text-purple-500 text-xs mb-2 font-mono">EXTRAINDO PACOTES DE DADOS...</p>
+                            <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                <div className="bg-purple-600 h-full" style={{width: `${progress}%`}}></div>
+                            </div>
+                            <p className="text-right text-purple-500 text-xs mt-2">{progress}%</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Renderização Final
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
