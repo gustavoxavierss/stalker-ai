@@ -5,38 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stalkea AI - Monitoramento Oficial</title>
     
-    <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-        document,'script','https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1408422817609246');
-        fbq('track', 'PageView');
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
+        /* MANTENDO TODA A ESTÉTICA DO SEU ARQUIVO ORIGINAL */
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; margin: 0; }
-        .matrix-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; }
-        .matrix-bg-1 { background-image: repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, transparent 20px); animation: matrix-fall 18s linear infinite; }
-        @keyframes matrix-fall { from { background-position: 0 0; } to { background-position: 0 20px; } }
+        .matrix-bg { position: absolute; inset: 0; pointer-events: none; }
+        .matrix-bg-1 {
+          background-image: repeating-linear-gradient(to right, rgba(168,85,247,0.08) 0px, rgba(168,85,247,0.08) 1px, transparent 1px, transparent 10px),
+                            repeating-linear-gradient(to bottom, rgba(168,85,247,0.12) 0px, rgba(168,85,247,0.12) 2px, transparent 2px, transparent 20px);
+          animation: matrix-fall 18s linear infinite; opacity: 0.28;
+        }
+        @keyframes matrix-fall { 0% { background-position: 0 0; } 100% { background-position: 0 20px; } }
         .glass { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .animate-text-shine {
-            background: linear-gradient(90deg, #a855f7, #d8b4fe, #ffffff, #a855f7);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
+          background: linear-gradient(90deg, #a855f7 0%, #d8b4fe 25%, #ffffff 50%, #d8b4fe 75%, #a855f7 100%);
+          background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
         .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; font-size: 14px; }
         .blur-extreme { filter: blur(25px); opacity: 0.4; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
-        .story-ring-cf { background: #4fce5d; padding: 2px; border-radius: 50%; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .btn-pay { background: linear-gradient(to right, #6B59D8, #9D4EDD); box-shadow: 0 0 25px rgba(107, 89, 216, 0.4); }
     </style>
@@ -45,18 +35,21 @@
     <div id="wrapper" class="min-h-screen relative flex flex-col items-center justify-center px-4 py-8">
         <div class="matrix-bg matrix-bg-1"></div>
 
-        <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
+        <div id="mainContainer" class="w-full max-w-[480px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
             <div id="initialLogo" class="mb-4">
-                <img alt="Stalkea.ai" class="w-40 h-40 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
+                <img alt="Stalkea.ai" class="w-64 h-64 object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]" src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png">
             </div>
 
             <div id="contentArea" class="w-full flex flex-col items-center">
-                <h1 class="text-[28px] md:text-[32px] font-black text-center leading-tight mb-6">
-                    Não fique na <span class="animate-text-shine text-transparent">dúvida</span>. Descubra a verdade agora.
+                <h1 class="text-[28px] md:text-[34px] font-black text-center leading-tight mb-6 -mt-10">
+                    Não fique na <span class="animate-text-shine">dúvida</span>. Descubra a verdade agora.
                 </h1>
                 <p class="text-gray-400 text-center text-sm mb-6 uppercase font-bold tracking-widest italic opacity-70">Digite o usuário sem o "@"</p>
-                <input type="text" id="usernameInput" placeholder="ex: neymarjr" class="w-full mb-6 p-5 rounded-2xl bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all">
-                <button id="searchBtn" class="w-full h-[70px] rounded-full font-black text-[22px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.03] active:scale-[0.95] transition-all shadow-lg uppercase italic tracking-tighter">
+                
+                <input type="text" id="usernameInput" placeholder="ex: neymarjr" 
+                    class="w-full mb-6 p-5 rounded-full bg-white/5 border border-white/10 text-white text-center font-bold outline-none focus:border-purple-500 transition-all text-xl shadow-inner">
+                
+                <button id="searchBtn" class="w-full h-[72px] rounded-full font-black text-[22px] bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] hover:scale-[1.03] active:scale-[0.95] transition-all shadow-lg uppercase italic tracking-tighter">
                     Espionar Agora
                 </button>
             </div>
@@ -82,10 +75,10 @@
             return num.toLocaleString('pt-BR');
         };
 
-        // PESQUISA E PARTE 2: CONFIRMAÇÃO
+        // PESQUISA E ETAPA 2: CONFIRMAÇÃO (INJEÇÃO DE APIS)
         searchBtn.addEventListener('click', async () => {
             const user = input.value.trim().replace('@', '');
-            if (!user) return alert("Digite um usuário válido.");
+            if (!user) return alert("Por favor, digite um usuário.");
             searchBtn.innerText = "RASTREANDO...";
             searchBtn.disabled = true;
 
@@ -103,113 +96,110 @@
                     initialLogo.style.display = 'none';
                     container.innerHTML = `
                         <div class="w-full animate-fade-in text-center">
-                            <h2 class="text-2xl font-black mb-2 text-purple-400 italic">Confirmar Perfil</h2>
-                            <p class="text-gray-300 text-sm mb-8">Deseja espionar <span class="font-bold text-white">@${userData.username}</span>?</p>
+                            <h2 class="text-2xl font-black mb-2 text-purple-400 italic uppercase">Confirmar Instagram</h2>
+                            <p class="text-gray-300 text-sm mb-8 px-4">Deseja espionar <span class="font-bold text-white">@${userData.username}</span>?</p>
                             <div class="flex items-center justify-between w-full mb-8 px-2">
                                 <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-24 h-24 rounded-full border-2 border-purple-500 object-cover shadow-2xl">
                                 <div class="flex flex-1 justify-around text-center ml-4">
-                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${userData.media_count || '0'}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${formatInstagram(userData.follower_count)}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
-                                    <div class="flex flex-col"><p class="font-black text-lg leading-none">${userData.following_count.toLocaleString('pt-BR')}</p><p class="text-[9px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
+                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.media_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">posts</p></div>
+                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.follower_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguidores</p></div>
+                                    <div class="flex flex-col"><p class="font-black text-xl leading-none">${formatInstagram(userData.following_count)}</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-1">seguindo</p></div>
                                 </div>
                             </div>
                             <div class="w-full bg-white/5 p-5 rounded-[32px] mb-8 border border-white/5 bio-style">
-                                ${userData.biography || "Perfil identificado e pronto para extração."}
+                                ${userData.biography || "Perfil identificado com sucesso."}
                             </div>
-                            <button id="finalConfirm" class="w-full h-16 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-tighter shadow-lg">Confirmar e Acessar ➔</button>
+                            <button id="finalConfirm" class="w-full h-16 rounded-full bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-lg uppercase italic tracking-tighter shadow-lg">Confirmar e Continuar ➔</button>
                         </div>
                     `;
                     document.getElementById('finalConfirm').addEventListener('click', startSimulation);
-                }
-            } catch (e) { alert("Erro ao carregar perfil."); searchBtn.disabled = false; }
+                } else { throw new Error(); }
+            } catch (e) { alert("Usuário não encontrado!"); searchBtn.innerText = "Espionar Agora"; searchBtn.disabled = false; }
         });
 
-        // SIMULAÇÃO TÉCNICA
+        // SIMULAÇÃO DE EXTRAÇÃO
         function startSimulation() {
             container.innerHTML = `
                 <div class="w-full text-center py-10 animate-fade-in">
-                    <h2 class="text-2xl font-black mb-6 animate-pulse uppercase italic tracking-widest">Extraindo Dados...</h2>
+                    <h2 class="text-2xl font-black mb-6 animate-pulse uppercase italic tracking-widest text-purple-400">Extraindo Dados...</h2>
                     <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-4"><div id="pFill" class="progress-fill"></div></div>
-                    <p id="pStatus" class="text-purple-400 font-bold text-[10px] uppercase tracking-widest italic opacity-80">Quebrando criptografia de mensagens...</p>
+                    <p id="pStatus" class="text-gray-400 font-bold text-[11px] uppercase tracking-widest italic opacity-80">Quebrando criptografia de mensagens...</p>
                 </div>
             `;
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.random() * 12;
-                if (progress >= 100) { clearInterval(interval); showInstagramInterface(); }
+                progress += Math.random() * 15;
+                if (progress >= 100) { clearInterval(interval); showFinalDashboard(); }
                 document.getElementById('pFill').style.width = progress + '%';
             }, 500);
         }
 
-        // PARTE 3: INTERFACE DO INSTAGRAM SIMULADA
-        function showInstagramInterface() {
-            wrapper.className = "bg-black min-h-screen py-6 flex flex-col items-center";
+        // ETAPA FINAL: INTERFACE DE RESULTADOS (PAYWALL)
+        function showFinalDashboard() {
+            wrapper.className = "bg-[#0a0a0a] min-h-screen py-6 flex flex-col items-center";
             wrapper.innerHTML = `
-                <div class="w-full max-w-[430px] flex flex-col animate-fade-in px-4">
-                    <div class="flex justify-between items-center mb-6 px-2">
-                        <span class="font-black text-2xl italic tracking-tighter uppercase">Instagram</span>
-                        <div class="flex gap-5 text-xl">
-                            <span>📷</span>
-                            <div class="relative"><span>💬</span><div class="absolute -top-1 -right-1 bg-red-500 text-[9px] px-1 rounded-full font-bold">12</div></div>
-                        </div>
+                <div class="w-full max-w-[480px] animate-fade-in px-4">
+                    <div class="flex flex-col items-center py-6 border-b border-white/5 mb-8 text-center">
+                        <img src="https://i.ibb.co/9m6pG513/f85d6e00-b101-4f91-9aff-0f3b3a3f1d09.png" class="w-12 mb-2 opacity-80">
+                        <h2 class="text-[9px] font-black tracking-[0.2em] text-gray-500 uppercase italic">A maior ferramenta de Stalker do Brasil</h2>
                     </div>
 
-                    <div class="flex gap-4 overflow-x-auto no-scrollbar mb-8">
-                        <div class="flex flex-col items-center min-w-[72px]">
-                            <div class="story-ring-cf w-16 h-16"><img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-full h-full rounded-full border-2 border-black object-cover blur-sm"></div>
-                            <span class="text-[10px] mt-1 font-bold text-green-500">Amigos Próximos</span>
-                        </div>
-                        ${[1,2,3,4].map(i => `<div class="flex flex-col items-center min-w-[72px] opacity-40"><div class="w-16 h-16 rounded-full border-2 border-purple-500 p-1"><div class="w-full h-full rounded-full bg-zinc-900"></div></div><span class="text-[10px] mt-1 text-gray-500">user_${i}...</span></div>`).join('')}
+                    <div class="bg-purple-600/20 border border-purple-500/40 p-5 rounded-3xl text-center mb-10">
+                        <p class="text-[10px] font-black uppercase tracking-tighter leading-relaxed">
+                            ESPIONAGEM 100% FINALIZADA! 🕵️<br>
+                            <span class="text-purple-300">ADQUIRA SEU ACESSO VIP E TENHA ACESSO A:</span>
+                        </p>
                     </div>
 
-                    <div class="flex-1 space-y-8 mb-12">
-                        <h2 class="text-xs font-black uppercase tracking-widest text-gray-500 italic">Mensagens Diretas Extraídas</h2>
-                        
-                        <div class="flex items-center gap-4 group cursor-pointer" onclick="showPaywall()">
-                            <div class="w-14 h-14 rounded-full bg-purple-900/40 flex items-center justify-center text-xl">🔞</div>
-                            <div class="flex-1 border-b border-white/5 pb-4">
-                                <div class="flex justify-between mb-1"><span class="font-bold text-sm">B**** G**** (D****)</span><span class="text-gray-500 text-[10px]">Agora</span></div>
-                                <div class="text-[12px] text-purple-400 font-medium"><span class="filter blur-[5px]">"Nossa, olha o que eu acabei de fazer..."</span> 📸 Foto</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-4 opacity-90" onclick="showPaywall()">
-                            <div class="w-14 h-14 rounded-full bg-white/5 overflow-hidden"><img src="https://i.pravatar.cc/150?u=12" class="w-full h-full object-cover blur-md"></div>
-                            <div class="flex-1 border-b border-white/5 pb-4">
-                                <div class="flex justify-between mb-1"><span class="font-bold text-sm">L**** M****</span><span class="text-gray-500 text-[10px]">15min</span></div>
-                                <div class="text-[12px] text-red-500 font-bold"><span class="filter blur-[5px]">"Quero você agora, vem ver esse vídeo..."</span> 🎥 Vídeo</div>
-                            </div>
-                        </div>
-
-                        <div class="text-center">
-                            <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic">Conteúdo de Visualização Única</h3>
-                            <div class="relative w-full aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl" onclick="showPaywall()">
-                                <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
-                                <div class="absolute inset-0 flex items-center justify-center text-white/40 text-5xl">🔒</div>
+                    <div class="mb-12 text-center">
+                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">📍 Localização em tempo real</h4>
+                        <div class="relative w-full h-44 rounded-[40px] overflow-hidden border border-white/5 bg-zinc-900 shadow-xl">
+                            <img src="https://i.ibb.co/L5Z5v5z/map-bg.png" class="w-full h-full object-cover opacity-20 blur-[1px]">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="relative">
+                                    <div class="absolute -inset-4 bg-purple-500 rounded-full animate-ping opacity-30"></div>
+                                    <img src="https://i.ibb.co/gMvJHcyP/map-marker.png" class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl object-cover">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="showPaywall()" class="w-full h-20 btn-pay rounded-3xl font-black text-lg uppercase italic tracking-widest animate-pulse">Desbloquear Histórico 🔓</button>
-                </div>
-
-                <div id="paywall" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col items-center justify-center p-8 text-center">
-                    <div class="w-full max-w-[380px] p-8 border-2 border-purple-600 rounded-[40px] bg-zinc-900/50 shadow-[0_0_50px_rgba(168,85,247,0.3)]">
-                        <span class="text-6xl block mb-6">🔒</span>
-                        <h2 class="text-2xl font-black italic mb-4 uppercase">Acesso Bloqueado</h2>
-                        <p class="text-gray-400 text-sm mb-8 leading-relaxed italic">Localizamos <span class="text-white font-bold">conversas picantes</span> e <span class="text-white font-bold">mídias ocultas</span>. Pague uma taxa única para liberar.</p>
-                        <div class="bg-black/40 rounded-3xl p-6 mb-8 border border-white/5 italic">
-                            <p class="text-xs text-gray-500 line-through font-bold">DE R$ 197,00 POR</p>
-                            <p class="text-5xl font-black italic tracking-tighter">R$ 27,00</p>
+                    <div class="mb-12 text-center flex flex-col items-center">
+                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60 italic">📷 Mídias e fotos privadas (Explícito)</h4>
+                        <div class="relative w-full aspect-square rounded-[40px] overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
+                            <img src="https://i.ibb.co/tP2w6z3F/Whats-App-Image-2026-02-26-at-14-15-56.jpg" class="w-full h-full object-cover blur-extreme grayscale opacity-40">
+                            <div class="absolute inset-0 flex items-center justify-center text-white/40 text-6xl">🔒</div>
                         </div>
-                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" class="w-full h-20 btn-pay rounded-3xl font-black text-xl uppercase italic tracking-widest">Liberar Agora</button>
-                        <p class="mt-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">Acesso Imediato • Garantia de 7 Dias</p>
+                    </div>
+
+                    <div class="mb-12 text-center">
+                        <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 italic opacity-60">💬 Mensagens sensíveis do Direct</h4>
+                        <div class="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 relative overflow-hidden">
+                            <div class="flex items-start gap-3 mb-6 opacity-40 blur-[6px]">
+                                <img src="https://images.weserv.nl/?url=${encodeURIComponent(userData.profile_pic_url)}" class="w-10 h-10 rounded-full border border-purple-500">
+                                <div class="bg-zinc-800 p-4 rounded-3xl rounded-tl-none text-[12px] text-left italic text-gray-300">"Quero te ver agora... como fazemos?"</div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="bg-purple-600 px-8 py-3 rounded-full font-black text-[11px] shadow-2xl uppercase italic tracking-widest">🔒 Revelar Direct</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-gradient-to-b from-purple-600/30 to-black border border-purple-500/40 rounded-[50px] text-center shadow-[0_0_60px_rgba(168,85,247,0.2)] mb-20">
+                        <p class="text-[10px] text-gray-500 line-through font-black mb-1 uppercase tracking-widest italic opacity-50">De R$ 197,00 por apenas</p>
+                        <div class="flex items-start justify-center gap-1 mb-8 italic text-white">
+                            <span class="text-2xl font-black mt-2">R$</span>
+                            <span class="text-7xl font-black tracking-tighter">27,00</span>
+                        </div>
+                        <button onclick="window.location.href='https://pay.kirvano.com/64f84099-2361-464a-a7f4-e74f85e43f72'" 
+                            class="w-full h-20 rounded-3xl btn-pay font-black text-xl uppercase italic tracking-widest hover:scale-[1.03] transition-transform">
+                            Liberar Acesso Agora
+                        </button>
+                        <p class="mt-6 text-[10px] text-gray-600 font-black uppercase tracking-widest italic opacity-70 italic">Acesso enviado imediatamente via e-mail</p>
                     </div>
                 </div>
             `;
         }
-
-        function showPaywall() { document.getElementById('paywall').classList.remove('hidden'); document.getElementById('paywall').classList.add('flex'); }
     </script>
 </body>
 </html>
