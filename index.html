@@ -33,19 +33,19 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
+        .bio-style { white-space: pre-wrap; word-break: break-word; text-align: left; line-height: 1.4; width: 100%; }
         
-        /* Alinhamento da Bio conforme padrão Instagram */
-        .bio-style { 
-            white-space: pre-wrap; 
-            word-break: break-word; 
-            text-align: left; 
-            line-height: 1.4;
-            width: 100%;
-        }
+        /* Estilos do Funil de Vendas */
+        .blur-content { filter: blur(8px); pointer-events: none; user-select: none; }
+        .lock-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border-radius: 12px; font-size: 24px; }
+        .progress-bar { height: 8px; background: #1a1a1a; border-radius: 4px; overflow: hidden; width: 100%; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6B59D8, #9D4EDD); width: 0%; transition: width 0.4s; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body>
-    <div class="min-h-screen relative flex flex-col items-center justify-center px-4">
+    <div class="min-h-screen relative flex flex-col items-center justify-center px-4 py-10">
         <div class="matrix-bg matrix-bg-1"></div>
 
         <div id="mainContainer" class="w-full max-w-[450px] glass rounded-[40px] p-8 flex flex-col items-center relative z-10 shadow-2xl transition-all duration-500">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="mt-8 text-center opacity-60">
+        <div id="footerText" class="mt-8 text-center opacity-60">
             <p id="counterDisplay" class="text-[#a855f7] font-black text-sm tracking-tight">+81.595 perfis analisados hoje</p>
         </div>
     </div>
@@ -80,6 +80,7 @@
         const input = document.getElementById('usernameInput');
         const container = document.getElementById('contentArea');
         const initialLogo = document.getElementById('initialLogo');
+        const mainContainer = document.getElementById('mainContainer');
 
         const formatInstagram = (num) => {
             if (!num && num !== 0) return '0';
@@ -136,16 +137,15 @@
 
                             <div class="flex w-full gap-3">
                                 <button onclick="window.location.reload()" class="flex-1 h-14 rounded-2xl border border-white/10 font-bold text-sm hover:bg-white/5 transition-all">Corrigir @</button>
-                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:brightness-110">
+                                <button id="finalConfirm" class="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
                                     Confirmar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                 </button>
                             </div>
                         </div>
                     `;
 
-                    document.getElementById('finalConfirm').addEventListener('click', () => {
-                        window.location.href = "https://SEU_CHECKOUT_AQUI.com";
-                    });
+                    // Inicia o Funil de Simulação
+                    document.getElementById('finalConfirm').addEventListener('click', startSimulation);
 
                 } else {
                     alert("Perfil não encontrado ou é privado. Tente novamente.");
@@ -154,11 +154,115 @@
                 }
             } catch (error) {
                 console.error(error);
-                alert("Erro ao conectar com a API detalhada.");
+                alert("Erro ao conectar com a API.");
                 searchBtn.innerText = "ESPIONAR AGORA";
                 searchBtn.disabled = false;
             }
         });
+
+        function startSimulation() {
+            mainContainer.innerHTML = `
+                <div class="w-full text-center py-10 animate-fade-in">
+                    <h2 class="text-2xl font-black mb-6 animate-pulse uppercase">Extraindo Dados...</h2>
+                    <div class="progress-bar mb-4"><div id="pFill" class="progress-fill"></div></div>
+                    <p id="pStatus" class="text-purple-400 font-bold text-sm uppercase tracking-tighter italic">Iniciando bypass de segurança...</p>
+                </div>
+            `;
+
+            const statuses = [
+                "Bypass de segurança em andamento...",
+                "Acessando servidores do Instagram...",
+                "Descriptografando mensagens Direct...",
+                "Recuperando mídias apagadas...",
+                "Localizando Stories ocultos...",
+                "Sincronizando banco de dados...",
+                "FINALIZANDO ESPIONAGEM!"
+            ];
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 12;
+                if (progress > 100) progress = 100;
+                
+                document.getElementById('pFill').style.width = progress + '%';
+                const statusIdx = Math.floor((progress / 100) * (statuses.length - 1));
+                document.getElementById('pStatus').innerText = statuses[statusIdx];
+
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(showSalesPage, 1000);
+                }
+            }, 500);
+        }
+
+        function showSalesPage() {
+            mainContainer.classList.remove('max-w-[450px]');
+            mainContainer.classList.add('max-w-[650px]');
+            
+            mainContainer.innerHTML = `
+                <div class="w-full animate-fade-in">
+                    <div class="bg-purple-600/20 border border-purple-500/30 p-4 rounded-2xl mb-8 text-center text-purple-300 font-black uppercase tracking-widest">
+                        Espionagem 100% Finalizada! 🕵️
+                    </div>
+
+                    <div class="mb-10">
+                        <h3 class="flex items-center gap-2 mb-6 font-black text-gray-200 uppercase text-sm italic">🎥 Mídias e Fotos Privadas</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            ${[1,2,3,4,5,6].map(() => `
+                                <div class="relative aspect-square">
+                                    <img src="https://i.pravatar.cc/300?img=${Math.floor(Math.random()*50)}" class="blur-content w-full h-full rounded-2xl object-cover">
+                                    <div class="lock-overlay text-white opacity-80">🔒</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="mb-10 relative">
+                        <h3 class="flex items-center gap-2 mb-6 font-black text-gray-200 uppercase text-sm italic">💬 Conversas e Directs do alvo</h3>
+                        <div class="bg-white/5 p-6 rounded-3xl blur-content space-y-4 border border-white/5">
+                            <div class="flex items-center gap-3"><div class="w-8 h-8 bg-purple-500/20 rounded-full"></div><div class="h-3 bg-white/10 w-3/4 rounded-full"></div></div>
+                            <div class="flex items-center gap-3 justify-end"><div class="h-3 bg-purple-500/40 w-1/2 rounded-full"></div><div class="w-8 h-8 bg-white/10 rounded-full"></div></div>
+                            <div class="flex items-center gap-3"><div class="w-8 h-8 bg-purple-500/20 rounded-full"></div><div class="h-3 bg-white/10 w-2/3 rounded-full"></div></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center z-20">
+                            <div class="bg-purple-600 px-6 py-3 rounded-full font-black text-sm shadow-xl flex items-center gap-2">🔒 VER CONVERSAS</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-b from-[#6B59D8]/30 to-black/40 border border-[#6B59D8]/40 rounded-[40px] p-8 text-center relative overflow-hidden mb-10">
+                        <p class="text-xs text-gray-400 line-through font-bold">DE R$ 197,00 POR APENAS</p>
+                        <p class="text-5xl font-black mb-8 text-white tracking-tighter">R$ 37,00</p>
+                        
+                        <div class="text-left space-y-4 text-sm mb-10">
+                            <div class="flex items-center gap-3"><span class="text-purple-400">✔</span> <span>Acesso completo ao Direct (Incluindo apagadas)</span></div>
+                            <div class="flex items-center gap-3"><span class="text-purple-400">✔</span> <span>Ver Stories e Posts ocultos/arquivados</span></div>
+                            <div class="flex items-center gap-3"><span class="text-purple-400">✔</span> <span>Localização exata via GPS do dispositivo</span></div>
+                            <div class="flex items-center gap-3"><span class="text-purple-400">✔</span> <span>Painel de monitoramento 24h por dia</span></div>
+                        </div>
+
+                        <button onclick="window.location.href='https://SEU_CHECKOUT_AQUI.com'" 
+                            class="w-full h-20 rounded-3xl bg-gradient-to-r from-[#6B59D8] to-[#9D4EDD] font-black text-xl shadow-2xl shadow-purple-500/40 hover:scale-[1.02] transition-transform uppercase italic">
+                            Acessar Tudo Agora
+                        </button>
+                        <p class="mt-4 text-[10px] text-gray-500 font-bold tracking-widest uppercase">Garantia Incondicional de 7 Dias</p>
+                    </div>
+
+                    <div class="w-full space-y-4">
+                        <h3 class="text-center font-black text-gray-400 text-xs tracking-widest uppercase mb-6 italic">Perguntas Frequentes</h3>
+                        <div class="space-y-2">
+                            <details class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                                <summary class="font-bold text-sm cursor-pointer flex justify-between items-center text-gray-300">A pessoa saberá que espionei? <span class="text-purple-500">+</span></summary>
+                                <p class="text-xs text-gray-500 mt-3 leading-relaxed">Não. Nosso sistema utiliza servidores criptografados que garantem 100% de anonimato. Seu alvo nunca saberá do acesso.</p>
+                            </details>
+                            <details class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                                <summary class="font-bold text-sm cursor-pointer flex justify-between items-center text-gray-300">Como recebo o acesso? <span class="text-purple-500">+</span></summary>
+                                <p class="text-xs text-gray-500 mt-3 leading-relaxed">O acesso ao painel de monitoramento é enviado instantaneamente para o seu e-mail após a confirmação do pagamento.</p>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
